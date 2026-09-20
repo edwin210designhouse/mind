@@ -283,11 +283,13 @@
   var STORAGE_KEY = "mc-unlocked";
   var htmlEl = document.documentElement;
   function unlock() {
-    try { localStorage.setItem(STORAGE_KEY, "yes"); } catch (e) {}
+    // sessionStorage (not localStorage) - stays unlocked for refreshes/navigation within
+    // this tab, but asks again once the tab or browser is closed and reopened.
+    try { sessionStorage.setItem(STORAGE_KEY, "yes"); } catch (e) {}
     htmlEl.classList.add("mc-unlocked");
   }
   try {
-    if (localStorage.getItem(STORAGE_KEY) === "yes") unlock();
+    if (sessionStorage.getItem(STORAGE_KEY) === "yes") htmlEl.classList.add("mc-unlocked");
   } catch (e) {}
   document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('lockForm');
