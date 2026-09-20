@@ -1,0 +1,1709 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mind Chunk</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📌</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f5f3ef; --card: #ffffff; --card-2: #fbfaf7;
+    --ink: #201f1c; --ink-2: #6b6862; --ink-3: #96938b; --line: #e6e2da;
+    --accent: #2f5d50; --accent-soft: #dcece6;
+    --shadow: 0 1px 2px rgba(32,31,28,0.04), 0 8px 20px -10px rgba(32,31,28,0.14);
+    --tag1-bg:#dbe9fb; --tag1-tx:#1d4ed8;
+    --tag2-bg:#f4e1f2; --tag2-tx:#a1348f;
+    --tag3-bg:#fde3cf; --tag3-tx:#b45309;
+    --tag4-bg:#d8f1ea; --tag4-tx:#0f766e;
+    --tag5-bg:#e2f0d6; --tag5-tx:#3f7d20;
+    --tag6-bg:#fbdfe0; --tag6-tx:#b91c3c;
+    --tag7-bg:#e7e2fb; --tag7-tx:#5b3fc4;
+    --tag-gray-bg:#eae7e0; --tag-gray-tx:#5c5952;
+    --pin-bg: #fff7dd; --pin-line: #ecdca3;
+    --check-border: #b5b0a2;
+    --glow-p1: 217,45,45; --glow-p2: 205,110,20; --glow-p3: 45,140,80; --glow-reminder: 90,90,220;
+    --reminder-bg: #ece9ff; --reminder-line: #cfc8f7;
+    --edit-outline: #171717;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17181a; --card: #201f22; --card-2: #262528;
+      --ink: #f1efe9; --ink-2: #b3afa5; --ink-3: #817e77; --line: #34322f;
+      --accent: #7bbfa9; --accent-soft: #223a33;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 24px -12px rgba(0,0,0,0.55);
+      --tag1-bg:#1d3554; --tag1-tx:#8fb6f5;
+      --tag2-bg:#432b40; --tag2-tx:#e2a0d7;
+      --tag3-bg:#4a3018; --tag3-tx:#f0af6a;
+      --tag4-bg:#12352e; --tag4-tx:#7fd6c2;
+      --tag5-bg:#28381a; --tag5-tx:#a4d97e;
+      --tag6-bg:#452027; --tag6-tx:#f2909c;
+      --tag7-bg:#2c2650; --tag7-tx:#b6a6f2;
+      --tag-gray-bg:#302e2a; --tag-gray-tx:#b3afa5;
+      --pin-bg: #2c2712; --pin-line: #4a3f1c;
+      --check-border: rgba(255,255,255,0.55);
+      --glow-p1: 240,90,90; --glow-p2: 235,150,60; --glow-p3: 90,200,140; --glow-reminder: 150,140,255;
+      --reminder-bg: #26234a; --reminder-line: #423d78;
+      --edit-outline: #ffffff;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17181a; --card: #201f22; --card-2: #262528;
+    --ink: #f1efe9; --ink-2: #b3afa5; --ink-3: #817e77; --line: #34322f;
+    --accent: #7bbfa9; --accent-soft: #223a33;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 24px -12px rgba(0,0,0,0.55);
+    --tag1-bg:#1d3554; --tag1-tx:#8fb6f5;
+    --tag2-bg:#432b40; --tag2-tx:#e2a0d7;
+    --tag3-bg:#4a3018; --tag3-tx:#f0af6a;
+    --tag4-bg:#12352e; --tag4-tx:#7fd6c2;
+    --tag5-bg:#28381a; --tag5-tx:#a4d97e;
+    --tag6-bg:#452027; --tag6-tx:#f2909c;
+    --tag7-bg:#2c2650; --tag7-tx:#b6a6f2;
+    --tag-gray-bg:#302e2a; --tag-gray-tx:#b3afa5;
+    --pin-bg: #2c2712; --pin-line: #4a3f1c;
+    --check-border: rgba(255,255,255,0.55);
+    --glow-p1: 240,90,90; --glow-p2: 235,150,60; --glow-p3: 90,200,140; --glow-reminder: 150,140,255;
+    --reminder-bg: #26234a; --reminder-line: #423d78;
+    --edit-outline: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Public Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 90px; }
+
+  .toolbar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+  .brand { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.01em; display: flex; align-items: center; gap: 7px; }
+  .brand .pin-ico { font-size: 1.1rem; }
+  .search { flex: 1 1 220px; min-width: 160px; }
+  .search input { width: 100%; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 10px; padding: 9px 13px; font-family: 'Public Sans', sans-serif; font-size: 0.88rem; }
+  .search input::placeholder { color: var(--ink-3); }
+  .sync-badge { display: inline-flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-2); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px 5px 9px; white-space: nowrap; }
+  .sync-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .sync-badge.is-error .dot { background: #b91c3c; }
+  .sync-badge.is-loading .dot { animation: pulse 1.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .sync-badge .dot { animation: none; } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .date-badge { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-2); white-space: nowrap; }
+  .theme-toggle-btn { padding: 6px 10px; font-size: 0.95rem; line-height: 1; }
+
+  .tagbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .tag-chip { font-family: 'Public Sans', sans-serif; font-size: 0.82rem; font-weight: 600; background: var(--card); color: var(--ink-2); border: 1px solid var(--line); border-radius: 999px; padding: 6px 13px; cursor: pointer; }
+  .tag-chip[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .viewbar { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .viewbar select, .filter-select { border: 1px solid var(--line); background: var(--card); color: var(--ink-2); border-radius: 8px; padding: 6px 9px; font-family: 'Public Sans', sans-serif; font-size: 0.8rem; }
+  .filter-select.is-filtered { border-color: var(--ink); box-shadow: 0 0 0 1.5px var(--ink); color: var(--ink); font-weight: 600; }
+  .view-toggle-btn { display: inline-flex; align-items: center; justify-content: center; padding: 7px 10px; }
+  .view-icon { display: inline-grid; }
+  .view-icon-grid { grid-template-columns: repeat(2, 6px); grid-template-rows: repeat(2, 6px); gap: 3px; }
+  .view-icon-grid i { display: block; width: 6px; height: 6px; border-radius: 1px; background: currentColor; opacity: 0.75; }
+  .view-icon-list { display: flex; flex-direction: column; justify-content: center; gap: 3px; width: 16px; }
+  .view-icon-list i { display: block; height: 2.5px; width: 100%; border-radius: 1px; background: currentColor; opacity: 0.75; }
+
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-2); margin: 22px 0 10px; }
+  .section-label .count { font-family: 'IBM Plex Mono', monospace; color: var(--ink-3); font-weight: 400; text-transform: none; letter-spacing: 0; }
+
+  .section-header { margin: 22px 0 4px; }
+  .section-title-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .section-title-group { display: flex; align-items: center; gap: 10px; }
+  .section-title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0; }
+  .section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.35rem; letter-spacing: -0.01em; color: var(--ink); }
+  .view-tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; flex: none; }
+  .view-tab { border: none; background: var(--card); color: var(--ink-2); font-family: 'Public Sans', sans-serif; font-weight: 700; font-size: 0.85rem; padding: 8px 16px; cursor: pointer; }
+  .view-tab + .view-tab { border-left: 1px solid var(--line); }
+  .tab-count { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; margin-left: 3px; border-radius: 999px; background: #b91c3c; color: #fff; font-size: 0.68rem; font-weight: 700; line-height: 1; vertical-align: middle; }
+  .tab-count:empty { display: none; }
+  .view-tab.is-active { background: var(--accent); color: #fff; }
+  .view-tab:disabled { opacity: 0.4; cursor: not-allowed; }
+  .filter-group { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+  .section-edit-btn { display: none; align-items: center; justify-content: center; width: 27px; height: 27px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #111; cursor: pointer; font-size: 0.85rem; padding: 0; line-height: 1; flex: none; }
+  .section-edit-btn.is-visible { display: inline-flex; }
+  .section-edit-btn:hover { background: #f0f0f0; }
+  .color-picker-row { display: none; flex-direction: column; align-items: flex-start; gap: 10px; margin: 10px 0 4px; }
+  .color-picker-row .swatch-row { display: flex; align-items: center; gap: 9px; }
+  .color-swatch { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; padding: 0; }
+  .color-swatch.is-active { border-color: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.45); }
+  .rename-row { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+  .rename-row input[type="text"] { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px; padding: 6px 10px; font-family: 'Public Sans', sans-serif; font-size: 0.82rem; flex: 1 1 200px; max-width: 260px; }
+  .rename-row button { border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.78rem; border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+  .rename-row button:disabled { opacity: 0.5; cursor: default; }
+  .rename-row .rename-hint { font-size: 0.72rem; color: var(--ink-3); }
+
+  .wall { columns: 250px; column-gap: 14px; }
+  .note { break-inside: avoid; margin-bottom: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 14px; box-shadow: var(--shadow); }
+  .note.is-pinned { background: var(--pin-bg); border-color: var(--pin-line); }
+  .note.is-removing { opacity: 0.3; }
+  .note.p1 { border: 1.5px solid rgba(var(--glow-p1), 0.8); }
+  .note.p2 { border: 1.5px solid rgba(var(--glow-p2), 0.8); }
+  .note.p3 { border: 1.5px solid rgba(var(--glow-p3), 0.8); }
+  .note.pR { border: 1.5px solid rgba(var(--glow-reminder), 0.8); background: var(--reminder-bg); }
+
+  .note-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+  .note-date { font-size: 0.7rem; color: var(--ink-3); }
+  .note-actions { display: flex; align-items: center; gap: 7px; flex: none; }
+  .note-edit-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #111; cursor: pointer; font-size: 0.72rem; padding: 0; line-height: 1; flex: none; opacity: 0; transition: opacity 0.12s ease; }
+  .note-edit-btn:hover { background: #f0f0f0; }
+  .note:hover .note-edit-btn, .task-row:hover .note-edit-btn, .note-edit-btn:focus-visible { opacity: 1; }
+  @media (hover: none) { .note-edit-btn { opacity: 1; } }
+  .note-check { width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid var(--check-border); background: var(--card-2); cursor: pointer; appearance: none; -webkit-appearance: none; position: relative; flex: none; }
+  .note-check:hover { border-color: var(--accent); }
+  .note-check:checked { background: var(--accent); border-color: var(--accent); }
+  .note-check:checked::after { content: ""; position: absolute; left: 5px; top: 1px; width: 4px; height: 8px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+  .note-title { font-weight: 600; font-size: 0.94rem; line-height: 1.35; margin-bottom: 10px; }
+  .note-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .pill { font-family: 'Public Sans', sans-serif; font-size: 0.7rem; font-weight: 700; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+  .pill-who { background: var(--tag-gray-bg); color: var(--tag-gray-tx); font-weight: 500; }
+  .pill-reminder { background: rgba(var(--glow-reminder), 0.18); color: rgb(var(--glow-reminder)); }
+  .note-icon-btn { cursor: pointer; font-size: 0.82rem; opacity: 0.8; border: none; background: transparent; padding: 0; line-height: 1; }
+  .note-icon-btn:hover { opacity: 1; }
+  .note-expand { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+  .note-expand-text { font-size: 0.85rem; line-height: 1.5; color: var(--ink-2); white-space: pre-wrap; margin-bottom: 6px; }
+  .note-expand-actions { display: flex; gap: 6px; justify-content: flex-end; }
+  .note-quick-edit-btn, .note-quick-close-btn, .note-quick-cancel-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #111; cursor: pointer; font-size: 0.7rem; padding: 0; line-height: 1; flex: none; }
+  .note-quick-edit-btn:hover, .note-quick-close-btn:hover, .note-quick-cancel-btn:hover { background: #f0f0f0; }
+  .note-quick-save-btn { border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.75rem; border-radius: 6px; padding: 5px 12px; cursor: pointer; flex: none; }
+  .note-quick-save-btn:disabled { opacity: 0.5; cursor: default; }
+  .note-quick-edit-input { width: 100%; border: 1px solid var(--line); background: var(--card-2); color: var(--ink); border-radius: 8px; padding: 7px 9px; font-family: 'Public Sans', sans-serif; font-size: 0.82rem; min-height: 54px; resize: vertical; margin-bottom: 6px; }
+  .task-row.is-note-expanded { flex-direction: column; align-items: stretch; }
+  .task-row-main { display: flex; align-items: center; gap: 10px; width: 100%; }
+
+  .task-list { display: flex; flex-direction: column; gap: 8px; }
+  .task-row { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; box-shadow: var(--shadow); }
+  .task-row.is-pinned { background: var(--pin-bg); border-color: var(--pin-line); }
+  .task-row.is-removing { opacity: 0.3; }
+  .task-row.p1 { border: 1.5px solid rgba(var(--glow-p1), 0.8); }
+  .task-row.p2 { border: 1.5px solid rgba(var(--glow-p2), 0.8); }
+  .task-row.p3 { border: 1.5px solid rgba(var(--glow-p3), 0.8); }
+  .task-row.pR { border: 1.5px solid rgba(var(--glow-reminder), 0.8); background: var(--reminder-bg); }
+  .task-row-title { flex: 1; font-weight: 600; font-size: 0.88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .task-row-date { flex: none; font-size: 0.7rem; color: var(--ink-3); }
+
+  .note.is-editing { border: 2px solid var(--edit-outline); }
+  .edit-field-row { margin-bottom: 8px; }
+  .edit-field-row:last-of-type { margin-bottom: 10px; }
+  .edit-field-row input[type="text"], .edit-field-row select, .edit-field-row textarea {
+    width: 100%; border: 1px solid var(--line); background: var(--card-2); color: var(--ink); border-radius: 8px; padding: 7px 9px; font-family: 'Public Sans', sans-serif; font-size: 0.82rem;
+  }
+  .edit-field-row textarea { min-height: 54px; resize: vertical; font-family: 'Public Sans', sans-serif; }
+  .edit-actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .edit-save-btn { border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.78rem; border-radius: 8px; padding: 6px 14px; cursor: pointer; }
+  .edit-save-btn:disabled { opacity: 0.5; cursor: default; }
+  .edit-cancel-btn { border: 1px solid var(--line); background: var(--card); color: var(--ink-2); font-weight: 600; font-size: 0.78rem; border-radius: 8px; padding: 6px 14px; cursor: pointer; }
+
+  .compose { border: 1.5px dashed var(--line); border-radius: 13px; padding: 12px 14px; margin-bottom: 16px; background: var(--card-2); }
+  .compose form { display: flex; flex-direction: column; gap: 8px; }
+  .compose input[type="text"], .compose input[type="url"], .compose select { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px; padding: 8px 10px; font-family: 'Public Sans', sans-serif; font-size: 0.85rem; }
+  .compose-label { font-size: 0.78rem; font-weight: 600; color: var(--ink-2); }
+  .compose .row2 { display: flex; gap: 8px; flex-wrap: wrap; }
+  .compose .row2 select { flex: 0 0 auto; }
+  .compose .row2 input { flex: 1 1 140px; }
+  .compose button { align-self: flex-end; border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.82rem; border-radius: 8px; padding: 8px 16px; cursor: pointer; }
+  .compose button:disabled { opacity: 0.5; }
+
+  .empty-state, .status-state { text-align: center; padding: 50px 20px; color: var(--ink-2); }
+  .status-state .mono, .empty-state .mono { display: block; margin-top: 8px; font-size: 0.78rem; color: var(--ink-3); }
+
+  .closed-toggle-row { margin: 22px 0 4px; }
+  .damage-type-filter-row { margin: 0 0 14px; }
+  .closed-toggle-row .tag-chip { opacity: 0.9; }
+  .closed-list { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .closed-row { display: flex; align-items: center; gap: 10px; background: var(--card); padding: 8px 12px; font-size: 0.85rem; cursor: pointer; }
+  .closed-row:hover { background: var(--card-2); }
+  .closed-row:hover .closed-title { color: var(--ink); }
+  .closed-check { flex: none; width: 16px; height: 16px; border-radius: 5px; background: var(--accent); color: #fff; font-size: 0.62rem; display: flex; align-items: center; justify-content: center; }
+  .closed-hint { color: var(--ink-3); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.72rem; }
+  .closed-title { flex: 1; color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .closed-date { flex: none; color: var(--ink-3); font-size: 0.72rem; }
+
+  footer.note-foot { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.82rem; max-width: 60ch; }
+
+  .meeting-card { cursor: pointer; }
+  .note.meeting-card { border: 1.5px solid var(--edit-outline); }
+  .meeting-body { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 0.85rem; line-height: 1.5; color: var(--ink-2); white-space: pre-wrap; }
+  .damage-card.is-done { opacity: 0.55; }
+  .damage-card.is-done .note-title { text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .damage-row.is-done { opacity: 0.55; }
+  .damage-row.is-done .task-row-title { text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .unassigned-assign-row { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); display: flex; gap: 8px; }
+  .unassigned-assign-row select { flex: 1 1 auto; margin-bottom: 0 !important; }
+  .unassigned-assign-btn { flex: none; border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.78rem; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+  .unassigned-assign-btn:disabled { opacity: 0.5; }
+  .compose textarea { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px; padding: 8px 10px; font-family: 'Public Sans', sans-serif; font-size: 0.85rem; width: 100%; min-height: 70px; resize: vertical; }
+  .compose input[type="date"] { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px; padding: 8px 10px; font-family: 'Public Sans', sans-serif; font-size: 0.85rem; }
+
+  .logistics-preview-card { cursor: pointer; padding: 0; overflow: hidden; width: 100%; }
+  .logistics-preview-frame-wrap { position: relative; width: 100%; overflow: hidden; background: var(--card-2); }
+  .logistics-preview-iframe { display: block; border: none; pointer-events: none; transform-origin: top left; }
+  .logistics-preview-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: nowrap; padding: 10px 14px; font-size: 0.8rem; color: var(--ink-2); border-top: 1px dashed var(--line); }
+  .logistics-preview-foot span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .logistics-preview-foot .mono { color: var(--ink-3); font-size: 0.7rem; flex: none; }
+
+  .print-only { display: none; }
+  @media print {
+    body * { visibility: hidden; }
+    #printReport, #printReport * { visibility: visible; }
+    #printReport { position: absolute; top: 0; left: 0; width: 100%; padding: 20px; display: block; color: #111; background: #fff; }
+    #printReport h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.3rem; margin-bottom: 2px; }
+    #printReport h2 { margin-top: 22px; border-bottom: 1px solid #ccc; padding-bottom: 4px; font-size: 1rem; }
+    #printReport h3 { margin: 14px 0 4px; font-size: 0.88rem; }
+    #printReport ul { margin: 0 0 10px; padding-left: 20px; }
+    #printReport li { margin-bottom: 3px; font-size: 0.85rem; }
+    #printReport .report-date { color: #555; font-size: 0.8rem; margin-bottom: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar">
+    <button type="button" class="tag-chip theme-toggle-btn" id="themeToggleBtn" title="Switch light / dark">🌙</button>
+    <div class="brand"><span class="pin-ico">📌</span>Mind Chunk</div>
+    <div class="search"><input type="text" id="searchInput" placeholder="Search open items…"></div>
+    <span class="date-badge mono" id="dateBadge"></span>
+    <div class="sync-badge is-loading" id="syncBadge"><span class="dot"></span><span id="syncText">Connecting…</span></div>
+  </div>
+
+  <div class="tagbar" id="tagbar"></div>
+  <div class="tagbar">
+    <div class="viewbar">
+      <button type="button" class="tag-chip view-toggle-btn" id="viewGridBtn" aria-pressed="true" title="Grid view">
+        <span class="view-icon view-icon-grid" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      </button>
+      <button type="button" class="tag-chip view-toggle-btn" id="viewListBtn" aria-pressed="false" title="Line view (compact list)">
+        <span class="view-icon view-icon-list" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+      <button type="button" class="tag-chip" id="printReportBtn" title="Print a summary report">🖨 Report</button>
+      <button type="button" class="tag-chip" id="unassignedDamagesBtn" aria-pressed="false" title="Damages waiting to be filed under a project" style="display:none">⚠️ Unassigned <span class="mono" id="unassignedDamagesCount"></span></button>
+    </div>
+  </div>
+
+  <div class="compose" id="taskComposeBox">
+    <form id="addForm">
+      <input type="text" id="addTaskInput" placeholder="+ Add a task…" maxlength="200" required>
+      <div class="row2">
+        <input type="text" id="addProjectInput" placeholder="Project" maxlength="60" required list="projectOptions" autocomplete="off">
+        <datalist id="projectOptions"></datalist>
+        <input type="text" id="addWhoInput" placeholder="Who's court (e.g. Edwin, CMK, OMM)" maxlength="60" required>
+        <select id="addPriorityInput" required>
+          <option value="" selected disabled>Priority…</option>
+          <option value="R">🔔 Reminder</option>
+          <option value="1">P1 · pinned</option>
+          <option value="2">P2</option>
+          <option value="3">P3</option>
+        </select>
+        <button type="submit" id="addBtn">Add</button>
+      </div>
+      <div class="row2">
+        <input type="text" id="addNotesInput" placeholder="Notes (optional — hidden, only shows when you hover the card)" maxlength="500">
+      </div>
+    </form>
+  </div>
+  <div class="compose" id="meetingComposeBox" style="display:none">
+    <form id="addMeetingForm">
+      <input type="text" id="meetingTitleInput" placeholder="Meeting title / about" maxlength="200" required>
+      <div class="row2">
+        <input type="date" id="meetingDateInput" required>
+        <button type="submit" id="addMeetingBtn">Log meeting</button>
+      </div>
+      <div class="row2">
+        <textarea id="meetingNotesInput" placeholder="Notes"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="compose" id="logisticsComposeBox" style="display:none">
+    <form id="addLogisticsForm">
+      <label class="compose-label" for="logisticsLinkInput">Displayed link</label>
+      <div class="row2">
+        <input type="url" id="logisticsLinkInput" placeholder="https://your-tracking-site.example.com/dashboard.html" style="flex:1 1 100%">
+        <button type="submit" id="saveLogisticsBtn">Save link</button>
+      </div>
+    </form>
+  </div>
+  <div class="compose" id="damagesComposeBox" style="display:none">
+    <form id="addDamageForm">
+      <div class="row2">
+        <input type="text" id="damageUnitInput" placeholder="Unit number" maxlength="60" required>
+        <input type="text" id="damageItemCodeInput" placeholder="Item code" maxlength="60">
+        <select id="damageIssueTypeInput"></select>
+        <input type="date" id="damageDateInput" required>
+      </div>
+      <div class="row2">
+        <input type="text" id="damageItemDescInput" placeholder="Item description" maxlength="200" style="flex:1 1 100%">
+      </div>
+      <div class="row2">
+        <textarea id="damageIssueDescInput" placeholder="Issue description" style="flex:1 1 auto"></textarea>
+        <button type="submit" id="addDamageBtn">Log damage</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title-top">
+      <div class="section-title-group" id="sectionTitleGroup">
+        <span class="section-title" id="sectionTitle">All</span>
+        <button type="button" class="section-edit-btn" id="sectionEditBtn" title="Change this project's color" aria-label="Change this project's color">✎</button>
+      </div>
+      <div class="filter-group" id="filterGroup">
+        <select id="whoSelect" class="filter-select">
+          <option value="all">Court: everyone</option>
+          <option value="edwin">Court: Edwin</option>
+          <option value="others">Court: not Edwin</option>
+        </select>
+        <select id="sortSelect" class="filter-select">
+          <option value="pri-desc" selected>Sort: priority high → low</option>
+          <option value="pri-asc">Sort: priority low → high</option>
+          <option value="oldest">Sort: oldest first</option>
+          <option value="newest">Sort: newest first</option>
+        </select>
+      </div>
+    </div>
+    <div class="section-title-row" id="sectionTitleRow">
+      <div class="view-tabs" id="viewTabs">
+        <button type="button" class="view-tab is-active" id="tabMindChunk" aria-pressed="true">Mind Chunk <span class="tab-count mono" id="tabMindChunkCount"></span></button>
+        <button type="button" class="view-tab" id="tabMeetingNotes" aria-pressed="false" title="Select a project to view its meeting notes" disabled>Meeting Notes</button>
+        <button type="button" class="view-tab" id="tabLogistics" aria-pressed="false" title="Select a project to view its logistics" disabled>Logistics</button>
+        <button type="button" class="view-tab" id="tabDamages" aria-pressed="false" title="Select a project to view its damages" disabled>Damages <span class="tab-count mono" id="tabDamagesCount"></span></button>
+      </div>
+    </div>
+  </div>
+  <div class="color-picker-row" id="colorPickerRow"></div>
+
+  <div id="dashboardView">
+  <div id="remindersSection"></div>
+  <div id="pinnedSection"></div>
+  <div id="wallSection"></div>
+
+  <div class="closed-toggle-row">
+    <button type="button" class="tag-chip" id="closedToggleBtn" aria-pressed="false">✓ Show completed <span class="mono" id="closedCount"></span></button>
+  </div>
+  <div id="closedSection"></div>
+  </div>
+
+  <div id="meetingsView" style="display:none">
+    <div id="meetingsList"></div>
+  </div>
+
+  <div id="logisticsView" style="display:none"></div>
+
+  <div id="damagesView" style="display:none"></div>
+
+  <div id="unassignedDamagesView" style="display:none"></div>
+
+  <footer class="note-foot" id="footerNote">Data lives in a private Google Sheet behind this page — edited here, or by emailing yourself a "+task" message.</footer>
+  <div id="printReport" class="print-only"></div>
+</div>
+
+<script>
+(function () {
+  var CONFIG = {
+    API_URL: "https://script.google.com/macros/s/AKfycbwytyo4N0cnH4bS6_jG4aH4rLF0xzC7ep52Li5mZ_veIGtbV_Awlzw9shlDQoFn4oKu/exec",
+    KEY: "Dsv2O6mYUIU4fUDKrw7j8bNy"
+  };
+
+  var state = { items: [], closedItems: [], filter: "all", whoFilter: "all", search: "", sort: "pri-desc", view: "grid", showClosed: false, editingId: null, meetingNotes: [], meetingsLoaded: false, activeTab: "dashboard", expandedMeetingId: null, editingMeetingId: null, expandedNoteId: null, editingNoteId: null, logisticsLinks: {}, logisticsLoaded: false, damages: [], damagesLoaded: false, expandedDamageId: null, editingDamageId: null, damagesShowClosed: false, damagesTypeFilter: 'all' };
+  var NO_MEETING_PROJECTS = ["warehouse"]; // project names (case-insensitive) that don't get Meeting Notes / Logistics / Damages
+  var FILTER_DEFAULTS = { whoFilter: "all", sort: "pri-desc" };
+  var POLL_MS = 45000;
+  var TAG_PALETTE = ["tag1","tag2","tag3","tag4","tag5","tag6","tag7"];
+
+  var syncBadge = document.getElementById('syncBadge');
+  var syncText = document.getElementById('syncText');
+  var tagbar = document.getElementById('tagbar');
+  var remindersSection = document.getElementById('remindersSection');
+  var pinnedSection = document.getElementById('pinnedSection');
+  var wallSection = document.getElementById('wallSection');
+  var closedSection = document.getElementById('closedSection');
+  var closedToggleBtn = document.getElementById('closedToggleBtn');
+  var closedCount = document.getElementById('closedCount');
+  var sectionTitleEl = document.getElementById('sectionTitle');
+  var sectionEditBtn = document.getElementById('sectionEditBtn');
+  var colorPickerRow = document.getElementById('colorPickerRow');
+  var dashboardView = document.getElementById('dashboardView');
+  var meetingsView = document.getElementById('meetingsView');
+  var meetingsList = document.getElementById('meetingsList');
+  var taskComposeBox = document.getElementById('taskComposeBox');
+  var meetingComposeBox = document.getElementById('meetingComposeBox');
+  var logisticsComposeBox = document.getElementById('logisticsComposeBox');
+  var logisticsLinkInput = document.getElementById('logisticsLinkInput');
+  var damagesComposeBox = document.getElementById('damagesComposeBox');
+  var tabMindChunk = document.getElementById('tabMindChunk');
+  var tabMeetingNotes = document.getElementById('tabMeetingNotes');
+  var tabLogistics = document.getElementById('tabLogistics');
+  var tabDamages = document.getElementById('tabDamages');
+  var tabMindChunkCount = document.getElementById('tabMindChunkCount');
+  var tabDamagesCount = document.getElementById('tabDamagesCount');
+  var logisticsView = document.getElementById('logisticsView');
+  var damagesView = document.getElementById('damagesView');
+  var unassignedDamagesView = document.getElementById('unassignedDamagesView');
+  var unassignedDamagesBtn = document.getElementById('unassignedDamagesBtn');
+  var unassignedDamagesCount = document.getElementById('unassignedDamagesCount');
+  var filterGroup = document.getElementById('filterGroup');
+  var sectionTitleGroup = document.getElementById('sectionTitleGroup');
+  var sectionTitleRow = document.getElementById('sectionTitleRow');
+
+  function setBadge(mode, text) {
+    syncBadge.className = 'sync-badge' + (mode === 'error' ? ' is-error' : mode === 'loading' ? ' is-loading' : '');
+    syncText.textContent = text;
+  }
+
+  // ---- Per-project tag colors: hash-assigned by default, overridable via the pencil ----
+  var PROJECT_COLOR_KEY = 'mc-project-colors';
+  var projectColorOverrides = {};
+  try { projectColorOverrides = JSON.parse(localStorage.getItem(PROJECT_COLOR_KEY) || '{}') || {}; } catch (e) { projectColorOverrides = {}; }
+
+  // ---- Per-project Logistics link: a live-ish preview of Edwin's own external tracking site.
+  // Read/written through the API now (the Sheet's 3rd tab, one row per project) instead of
+  // localStorage, so it's the same everywhere Edwin opens this site. DEFAULT_LOGISTICS_LINKS is
+  // just a fallback shown until a real row exists in the Sheet for that project.
+  var DEFAULT_LOGISTICS_LINKS = {
+    "Optima": "https://edwin210designhouse.github.io/OMM-OPTIMA-210-DASHBOARD/OMM_Optima_Dashboard.html"
+  };
+
+  function hashColor(str) {
+    var key = (str || '').trim();
+    if (projectColorOverrides[key]) return projectColorOverrides[key];
+    var h = 0;
+    for (var i = 0; i < key.length; i++) { h = (h * 31 + key.charCodeAt(i)) >>> 0; }
+    return TAG_PALETTE[h % TAG_PALETTE.length];
+  }
+
+  function ageLabel(dateStr) {
+    if (!dateStr) return "";
+    var then = new Date(dateStr + "T00:00:00");
+    var now = new Date();
+    var d = Math.floor((now - then) / 86400000);
+    if (isNaN(d)) return "";
+    if (d <= 0) return "today";
+    if (d === 1) return "1 day open";
+    return d + " days open";
+  }
+
+  async function loadItems(isPoll) {
+    if (!CONFIG.API_URL || CONFIG.API_URL.indexOf("PASTE_WEB_APP_URL_HERE") !== -1) {
+      setBadge('error', 'Not connected yet');
+      wallSection.innerHTML = '<div class="status-state">This page isn\'t wired up to your data yet.<span class="mono">Waiting on the Google Apps Script Web App URL.</span></div>';
+      pinnedSection.innerHTML = '';
+      tagbar.innerHTML = '';
+      closedSection.innerHTML = '';
+      closedCount.textContent = '';
+      return;
+    }
+    if (!isPoll) setBadge('loading', 'Loading…');
+    try {
+      var res = await fetch(CONFIG.API_URL + '?key=' + encodeURIComponent(CONFIG.KEY), { method: 'GET' });
+      var data = await res.json();
+      if (data.error) throw new Error(data.error);
+      var all = data.items || [];
+      state.items = all.filter(function (it) { return !it.done; });
+      state.closedItems = all.filter(function (it) { return it.done; }).sort(function (a, b) {
+        return (b.dateClosed || '').localeCompare(a.dateClosed || '');
+      });
+      render();
+      setBadge('ok', 'Synced just now');
+    } catch (err) {
+      setBadge('error', "Couldn't reach your data");
+    }
+  }
+
+  async function postAction(payload) {
+    payload.key = CONFIG.KEY;
+    return fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  // ---- Meeting Notes: separate view, reads/writes the 2nd sheet tab ----
+  function todayISO() {
+    var d = new Date();
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+
+  function isProjectFilterValue(f) {
+    return f !== 'all' && f !== 'reminder' && f !== 'p1' && f !== 'p2' && f !== 'p3';
+  }
+
+  // Meeting Notes / Logistics / Damages only make sense for an actual project chip —
+  // and are held back for a few projects (e.g. Warehouse) that don't track that data.
+  function perProjectTabsEligible(f) {
+    if (!isProjectFilterValue(f)) return false;
+    if (NO_MEETING_PROJECTS.indexOf((f || '').trim().toLowerCase()) !== -1) return false;
+    return true;
+  }
+
+  function currentTabProject() {
+    return perProjectTabsEligible(state.filter) ? state.filter : null;
+  }
+
+  // Live open-item counts on the "Mind Chunk" and "Damages" tab labels for whichever project
+  // chip is active - blank (not "0") when no project is selected or a tab doesn't apply.
+  function refreshTabCounts() {
+    var project = isProjectFilterValue(state.filter) ? state.filter : null;
+    var openTasks = project ? state.items.filter(function (it) { return (it.project || '').trim() === project; }).length : 0;
+    tabMindChunkCount.textContent = (project && openTasks) ? String(openTasks) : '';
+
+    var damageProject = currentTabProject(); // null when no project selected, or the project is excluded (e.g. Warehouse)
+    var openDamages = (damageProject && state.damagesLoaded)
+      ? state.damages.filter(function (d) { return (d.project || '').trim() === damageProject && !d.done; }).length
+      : 0;
+    tabDamagesCount.textContent = (damageProject && openDamages) ? String(openDamages) : '';
+  }
+
+  var TAB_BUTTONS = { dashboard: tabMindChunk, meetings: tabMeetingNotes, logistics: tabLogistics, damages: tabDamages, unassignedDamages: unassignedDamagesBtn };
+  var PER_PROJECT_TABS = { meetings: true, logistics: true, damages: true }; // these need an eligible project selected; unassignedDamages is global, like the dashboard
+  var GLOBAL_TABS = { unassignedDamages: true }; // tabs that don't belong to any one project - hide the project title/tabs row while active
+
+  function setActiveTab(tab) {
+    if (PER_PROJECT_TABS[tab] && !currentTabProject()) return; // guard: needs an eligible project selected
+    state.activeTab = tab;
+    Object.keys(TAB_BUTTONS).forEach(function (key) {
+      var btn = TAB_BUTTONS[key];
+      var active = state.activeTab === key;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+    dashboardView.style.display = state.activeTab === 'dashboard' ? '' : 'none';
+    meetingsView.style.display = state.activeTab === 'meetings' ? '' : 'none';
+    logisticsView.style.display = state.activeTab === 'logistics' ? '' : 'none';
+    damagesView.style.display = state.activeTab === 'damages' ? '' : 'none';
+    unassignedDamagesView.style.display = state.activeTab === 'unassignedDamages' ? '' : 'none';
+    taskComposeBox.style.display = state.activeTab === 'dashboard' ? '' : 'none';
+    meetingComposeBox.style.display = state.activeTab === 'meetings' ? '' : 'none';
+    logisticsComposeBox.style.display = state.activeTab === 'logistics' ? '' : 'none';
+    damagesComposeBox.style.display = state.activeTab === 'damages' ? '' : 'none';
+    filterGroup.style.display = state.activeTab === 'dashboard' ? '' : 'none';
+    // The project title + Mind Chunk/Meeting Notes/Logistics/Damages tabs don't apply to the
+    // global Unassigned Damages view, so hide them while it's active.
+    sectionTitleGroup.style.display = GLOBAL_TABS[state.activeTab] ? 'none' : '';
+    sectionTitleRow.style.display = GLOBAL_TABS[state.activeTab] ? 'none' : '';
+    if (state.activeTab === 'meetings') renderMeetings();
+    if (state.activeTab === 'logistics') renderLogistics();
+    if (state.activeTab === 'damages') renderDamages();
+    if (state.activeTab === 'unassignedDamages') renderUnassignedDamages();
+  }
+
+  // Best-effort native size of the embedded page, used to compute a uniform scale so the
+  // WHOLE first tab shows at once (no internal scrollbar) sized to fill the card's width.
+  // Can't read the real content height of a cross-origin iframe from script by default, so
+  // LOGISTICS_PREVIEW_NATIVE_HEIGHT_FALLBACK is a best-effort guess used until/unless the
+  // embedded page tells us its real height via postMessage (see the listener below) - once
+  // a page reports in, that exact value is cached per-URL and used instead of the guess.
+  var LOGISTICS_PREVIEW_NATIVE_WIDTH = 1600;
+  var LOGISTICS_PREVIEW_NATIVE_HEIGHT_FALLBACK = 1100;
+  var logisticsReportedHeights = {}; // url -> real content height reported by the embedded page
+
+  function sizeLogisticsPreview() {
+    var wrap = logisticsView.querySelector('.logistics-preview-frame-wrap');
+    var frame = logisticsView.querySelector('.logistics-preview-iframe');
+    if (!wrap || !frame) return;
+    var nativeHeight = logisticsReportedHeights[frame.src] || LOGISTICS_PREVIEW_NATIVE_HEIGHT_FALLBACK;
+    var scale = wrap.clientWidth / LOGISTICS_PREVIEW_NATIVE_WIDTH;
+    frame.style.width = LOGISTICS_PREVIEW_NATIVE_WIDTH + 'px';
+    frame.style.height = nativeHeight + 'px';
+    frame.style.transform = 'scale(' + scale + ')';
+    wrap.style.height = Math.round(nativeHeight * scale) + 'px';
+  }
+
+  // If the embedded page ever posts its real height (see the snippet Claude can hand Edwin
+  // for his own dashboard sites), use that instead of the guess - exact fit, no more tuning.
+  window.addEventListener('message', function (e) {
+    var data = e.data;
+    if (!data || data.type !== 'mindChunkPreviewHeight' || !data.height) return;
+    var frame = logisticsView.querySelector('.logistics-preview-iframe');
+    if (!frame) return;
+    logisticsReportedHeights[frame.src] = Math.max(200, Math.min(8000, Number(data.height) || 0));
+    sizeLogisticsPreview();
+  });
+
+  async function loadLogistics() {
+    try {
+      var res = await fetch(CONFIG.API_URL + '?key=' + encodeURIComponent(CONFIG.KEY) + '&sheet=logistics', { method: 'GET' });
+      var data = await res.json();
+      if (data.error) throw new Error(data.error);
+      var links = {};
+      (data.links || []).forEach(function (l) {
+        if (l.project) links[String(l.project).trim()] = l.url || '';
+      });
+      state.logisticsLinks = links;
+    } catch (err) {
+      // Backend hasn't been updated with a logistics endpoint yet, or the request failed -
+      // fall back to DEFAULT_LOGISTICS_LINKS below rather than blocking on an error.
+      state.logisticsLinks = {};
+    }
+    state.logisticsLoaded = true;
+    if (state.activeTab === 'logistics') renderLogistics();
+  }
+
+  function renderLogistics() {
+    var project = currentTabProject();
+    if (!state.logisticsLoaded) {
+      logisticsView.innerHTML = '<div class="status-state">Loading…</div>';
+      loadLogistics();
+      return;
+    }
+    var url = ((project && state.logisticsLinks[project]) || (project && DEFAULT_LOGISTICS_LINKS[project]) || '').trim();
+    logisticsLinkInput.value = url;
+    if (!url) {
+      logisticsView.innerHTML = '<div class="empty-state">No logistics link added yet for ' + escapeHtml(project || '') + '. ' +
+        '<span class="mono">Paste your tracking site\'s link above to show a live preview here.</span></div>';
+      return;
+    }
+    logisticsView.innerHTML = '<div class="note logistics-preview-card" data-url="' + escapeHtml(url) + '">' +
+      '<div class="logistics-preview-frame-wrap"><iframe class="logistics-preview-iframe" src="' + escapeHtml(url) + '" tabindex="-1" aria-hidden="true" loading="lazy"></iframe></div>' +
+      '<div class="logistics-preview-foot"><span>' + escapeHtml(project) + ' — live preview</span><span class="mono">Click to open ↗</span></div>' +
+      '</div>';
+    var card = logisticsView.querySelector('.logistics-preview-card');
+    if (card) {
+      card.addEventListener('click', function () { window.open(url, '_blank', 'noopener'); });
+    }
+    sizeLogisticsPreview();
+  }
+
+  var logisticsResizeTimer = null;
+  window.addEventListener('resize', function () {
+    if (state.activeTab !== 'logistics') return;
+    clearTimeout(logisticsResizeTimer);
+    logisticsResizeTimer = setTimeout(sizeLogisticsPreview, 150);
+  });
+
+  async function loadDamages() {
+    // Loaded eagerly on page load (like the main items list) rather than only once a project's
+    // Damages tab is first opened - the Unassigned badge in the toolbar needs an accurate count
+    // at all times, not just after visiting a project tab.
+    if (state.activeTab === 'damages') damagesView.innerHTML = '<div class="status-state">Loading…</div>';
+    try {
+      var res = await fetch(CONFIG.API_URL + '?key=' + encodeURIComponent(CONFIG.KEY) + '&sheet=damages', { method: 'GET' });
+      var data = await res.json();
+      if (data.error) throw new Error(data.error);
+      state.damages = (data.damages || []).slice().sort(function (a, b) {
+        var cmp = (b.dateReported || '').localeCompare(a.dateReported || '');
+        return cmp !== 0 ? cmp : Number(b.id) - Number(a.id);
+      });
+      state.damagesLoaded = true;
+      refreshUnassignedDamagesBadge();
+      refreshTabCounts();
+      if (state.activeTab === 'damages') renderDamages();
+      if (state.activeTab === 'unassignedDamages') renderUnassignedDamages();
+    } catch (err) {
+      if (state.activeTab === 'damages') {
+        damagesView.innerHTML = '<div class="status-state">Couldn\'t load damages.<span class="mono">' + escapeHtml((err && err.message) || '') + '</span></div>';
+      }
+    }
+  }
+
+  // ---- Unassigned Damages: a global (not project-gated) bucket for damages that came in
+  // without a project - e.g. once the +damage email watcher is live, since the OMM form itself
+  // has no Project field. Quick-assign here files them under the right project chip. ----
+  function refreshUnassignedDamagesBadge() {
+    var unassigned = state.damages.filter(function (d) { return !(d.project || '').trim(); });
+    unassignedDamagesBtn.style.display = unassigned.length ? '' : 'none';
+    unassignedDamagesCount.textContent = unassigned.length ? String(unassigned.length) : '';
+    if (!unassigned.length && state.activeTab === 'unassignedDamages') setActiveTab('dashboard');
+  }
+
+  function knownProjectNames() {
+    return Array.from(new Set(state.items.map(function (it) { return (it.project || '').trim(); }).filter(Boolean))).sort();
+  }
+
+  function unassignedDamageCard(d) {
+    var expanded = String(state.expandedDamageId) === String(d.id);
+    var title = [d.unitNumber, d.itemCode].filter(Boolean).join(' · ') || '(no unit/item)';
+    var body = expanded ? '<div class="meeting-body">' +
+      (d.itemDescription ? escapeHtml(d.itemDescription) + '<br>' : '') +
+      escapeHtml(d.issueDescription || '(no issue description)') +
+      '</div>' : '';
+    var options = '<option value="" selected disabled>Assign to project…</option>' + knownProjectNames().map(function (p) {
+      return '<option value="' + escapeHtml(p) + '">' + escapeHtml(p) + '</option>';
+    }).join('');
+    return '<div class="note meeting-card damage-card" data-id="' + escapeHtml(d.id) + '">' +
+      '<div class="note-top"><span class="note-date mono">' + escapeHtml(d.dateReported || '') + '</span></div>' +
+      '<div class="note-title">' + escapeHtml(title) + (d.issueType ? ' <span class="mono">— ' + escapeHtml(d.issueType) + '</span>' : '') + '</div>' +
+      body +
+      '<div class="edit-field-row unassigned-assign-row">' +
+      '<select class="unassigned-assign-select">' + options + '</select>' +
+      '<button type="button" class="unassigned-assign-btn" data-id="' + escapeHtml(d.id) + '">Assign</button>' +
+      '</div></div>';
+  }
+
+  function renderUnassignedDamages() {
+    if (!state.damagesLoaded) { loadDamages(); return; }
+    var unassigned = state.damages.filter(function (d) { return !(d.project || '').trim(); });
+    if (!unassigned.length) {
+      unassignedDamagesView.innerHTML = '<div class="empty-state">Nothing waiting to be filed. Every damage on record has a project.</div>';
+      return;
+    }
+    unassignedDamagesView.innerHTML = '<div class="empty-state" style="padding:20px 4px;text-align:left;color:var(--ink-2)">' +
+      unassigned.length + ' damage item(s) came in without a project (usually from a forwarded email) - pick where each one belongs.</div>' +
+      '<div class="wall">' + unassigned.map(function (d) {
+        return unassignedDamageCard(d);
+      }).join('') + '</div>';
+    Array.prototype.forEach.call(unassignedDamagesView.querySelectorAll('.damage-card'), function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('.unassigned-assign-row')) return;
+        var id = card.getAttribute('data-id');
+        state.expandedDamageId = String(state.expandedDamageId) === String(id) ? null : id;
+        renderUnassignedDamages();
+      });
+    });
+    Array.prototype.forEach.call(unassignedDamagesView.querySelectorAll('.unassigned-assign-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var id = btn.getAttribute('data-id');
+        var select = btn.closest('.unassigned-assign-row').querySelector('.unassigned-assign-select');
+        var project = select.value;
+        if (!project) { select.focus(); return; }
+        btn.disabled = true;
+        postAction({ action: 'editDamage', id: id, project: project }).then(function () { loadDamages(); }).catch(function () { btn.disabled = false; });
+      });
+    });
+  }
+
+  var DAMAGE_ISSUE_TYPES = [
+    { code: 'LMI', label: 'Lost / Missing' },
+    { code: 'DB', label: 'Door Broken' },
+    { code: 'CB', label: 'Carcass Broken' },
+    { code: 'FCB', label: 'Full Cabinet Broken' },
+    { code: 'HHI', label: 'Hardware / Hinge Issue' },
+    { code: 'WID', label: 'Wrong Item Delivered' },
+    { code: 'NIR', label: 'New Item Request' }
+  ];
+
+  function damageIssueCode(issueType) {
+    var m = (issueType || '').trim().match(/^([A-Za-z]{2,4})\b/);
+    return m ? m[1].toUpperCase() : '';
+  }
+
+  // Builds the <option> list for the issue-type <select> used in both the compose form and the
+  // edit form. If the currently-selected raw value doesn't match one of the 7 known codes (e.g. an
+  // older/differently-worded entry from before this list existed), it's added as its own selected
+  // option so nothing gets silently changed until the user explicitly picks a new one.
+  function damageIssueTypeSelectOptions(selectedRaw) {
+    var selectedCode = damageIssueCode(selectedRaw);
+    var matched = DAMAGE_ISSUE_TYPES.some(function (t) { return t.code === selectedCode; });
+    var opts = '<option value=""' + (selectedRaw ? '' : ' selected') + ' disabled>Issue type…</option>';
+    opts += DAMAGE_ISSUE_TYPES.map(function (t) {
+      var val = t.code + ' – ' + t.label;
+      return '<option value="' + escapeHtml(val) + '"' + (matched && t.code === selectedCode ? ' selected' : '') + '>' + t.code + ' – ' + escapeHtml(t.label) + '</option>';
+    }).join('');
+    if (selectedRaw && !matched) {
+      opts += '<option value="' + escapeHtml(selectedRaw) + '" selected>' + escapeHtml(selectedRaw) + '</option>';
+    }
+    return opts;
+  }
+
+  // ---- Damages issue-type filter: a single dropdown (not a second row of tab-like chips) that
+  // lets Edwin see what kind of issues have come up for a project, across both open and closed
+  // items (closed items only show once "Show closed" is on, but the filter narrows both).
+  // Counts are against ALL items for the project, not just visible ones. Always defaults back to
+  // "All issue types" - the choice doesn't stick between project switches (see the tagbar chip
+  // click handler, which resets state.damagesTypeFilter). ----
+  function damageTypeFilterBar(all) {
+    var active = state.damagesTypeFilter || 'all';
+    var optsHtml = '<option value="all"' + (active === 'all' ? ' selected' : '') + '>All issue types (' + all.length + ')</option>';
+    optsHtml += DAMAGE_ISSUE_TYPES.map(function (t) {
+      var count = all.filter(function (d) { return damageIssueCode(d.issueType) === t.code; }).length;
+      return '<option value="' + t.code + '"' + (active === t.code ? ' selected' : '') + '>' + t.code + ' – ' + escapeHtml(t.label) + ' (' + count + ')</option>';
+    }).join('');
+    return '<div class="damage-type-filter-row"><select class="filter-select damage-type-filter-select">' + optsHtml + '</select></div>';
+  }
+
+  function damageClosedRow(d) {
+    var title = [d.unitNumber, d.itemCode].filter(Boolean).join(' · ') || '(no unit/item)';
+    var typeTag = d.issueType ? '<span class="pill pill-who">' + escapeHtml(d.issueType) + '</span>' : '';
+    var dateRange = (d.dateReported ? escapeHtml(d.dateReported) + ' → ' : '') + escapeHtml(d.dateClosed || '');
+    return '<div class="closed-row damage-closed-row" data-id="' + escapeHtml(d.id) + '" title="Click to reopen"><span class="closed-check">✓</span>' +
+      '<span class="closed-title">' + escapeHtml(title) + '</span>' + typeTag +
+      '<span class="closed-date mono">' + dateRange + '</span></div>';
+  }
+
+  function damageCard(d) {
+    var expanded = String(state.expandedDamageId) === String(d.id);
+    var title = [d.unitNumber, d.itemCode].filter(Boolean).join(' · ') || '(no unit/item)';
+    var body = expanded ? '<div class="meeting-body">' +
+      (d.itemDescription ? escapeHtml(d.itemDescription) + '<br>' : '') +
+      escapeHtml(d.issueDescription || '(no issue description)') +
+      (d.dateClosed ? '<br><span class="mono">Closed ' + escapeHtml(d.dateClosed) + '</span>' : '') +
+      '</div>' : '';
+    return '<div class="note meeting-card damage-card' + (d.done ? ' is-done' : '') + '" data-id="' + escapeHtml(d.id) + '">' +
+      '<div class="note-top"><span class="note-date mono">' + escapeHtml(d.dateReported || '') + '</span>' +
+      '<div class="note-actions">' +
+      '<button type="button" class="note-edit-btn damage-toggle-btn" data-id="' + escapeHtml(d.id) + '" title="' + (d.done ? 'Reopen' : 'Mark closed') + '" aria-label="' + (d.done ? 'Reopen' : 'Mark closed') + '">' + (d.done ? '↺' : '✓') + '</button>' +
+      '<button type="button" class="note-edit-btn damage-edit-btn" data-id="' + escapeHtml(d.id) + '" title="Edit" aria-label="Edit">✎</button>' +
+      '</div></div>' +
+      '<div class="note-title">' + escapeHtml(title) + (d.issueType ? ' <span class="mono">— ' + escapeHtml(d.issueType) + '</span>' : '') + '</div>' +
+      body +
+      '</div>';
+  }
+
+  // Compact single-line version of an open damage, used when the toolbar's List view is active -
+  // mirrors taskRow's markup/classes exactly so it looks consistent with the Mind Chunk tab's list view.
+  function damageRow(d) {
+    var expanded = String(state.expandedDamageId) === String(d.id);
+    var title = [d.unitNumber, d.itemCode].filter(Boolean).join(' · ') || '(no unit/item)';
+    var typeTag = d.issueType ? '<span class="pill pill-who">' + escapeHtml(d.issueType) + '</span>' : '';
+    var body = expanded ? '<div class="meeting-body">' +
+      (d.itemDescription ? escapeHtml(d.itemDescription) + '<br>' : '') +
+      escapeHtml(d.issueDescription || '(no issue description)') +
+      (d.dateClosed ? '<br><span class="mono">Closed ' + escapeHtml(d.dateClosed) + '</span>' : '') +
+      '</div>' : '';
+    return '<div class="task-row damage-row' + (d.done ? ' is-done' : '') + (expanded ? ' is-note-expanded' : '') + '" data-id="' + escapeHtml(d.id) + '">' +
+      '<div class="task-row-main">' +
+      '<button type="button" class="note-edit-btn damage-toggle-btn" data-id="' + escapeHtml(d.id) + '" title="' + (d.done ? 'Reopen' : 'Mark closed') + '" aria-label="' + (d.done ? 'Reopen' : 'Mark closed') + '">' + (d.done ? '↺' : '✓') + '</button>' +
+      '<button type="button" class="note-edit-btn damage-edit-btn" data-id="' + escapeHtml(d.id) + '" title="Edit" aria-label="Edit">✎</button>' +
+      '<span class="task-row-title">' + escapeHtml(title) + '</span>' + typeTag +
+      '<span class="task-row-date mono">' + escapeHtml(d.dateReported || '') + '</span>' +
+      '</div>' + body +
+      '</div>';
+  }
+
+  function damageEditForm(d) {
+    return '<div class="note is-editing" data-id="' + escapeHtml(d.id) + '">' +
+      '<div class="edit-field-row"><input type="text" class="edit-damage-unit" placeholder="Unit number" value="' + escapeHtml(d.unitNumber || '') + '"></div>' +
+      '<div class="edit-field-row"><input type="text" class="edit-damage-itemcode" placeholder="Item code" value="' + escapeHtml(d.itemCode || '') + '"></div>' +
+      '<div class="edit-field-row"><input type="text" class="edit-damage-itemdesc" placeholder="Item description" value="' + escapeHtml(d.itemDescription || '') + '"></div>' +
+      '<div class="edit-field-row"><select class="edit-damage-issuetype">' + damageIssueTypeSelectOptions(d.issueType || '') + '</select></div>' +
+      '<div class="edit-field-row"><textarea class="edit-damage-issuedesc" placeholder="Issue description">' + escapeHtml(d.issueDescription || '') + '</textarea></div>' +
+      '<div class="edit-field-row"><input type="date" class="edit-damage-datereported" value="' + escapeHtml(d.dateReported || '') + '"></div>' +
+      '<div class="edit-actions"><button type="button" class="edit-cancel-btn damage-cancel-btn">Cancel</button><button type="button" class="edit-save-btn damage-save-btn">Save</button></div>' +
+      '</div>';
+  }
+
+  function renderDamages() {
+    var project = currentTabProject();
+    if (!state.damagesLoaded) {
+      if (project) loadDamages();
+      return;
+    }
+    var all = state.damages.filter(function (d) { return (d.project || '').trim() === project; });
+    if (!all.length) {
+      damagesView.innerHTML = '<div class="empty-state">No damages logged yet for ' + escapeHtml(project || '') + '. ' +
+        '<span class="mono">Log one above from the OMM email you forward.</span></div>';
+      wireDamagesEvents();
+      return;
+    }
+    var typeFilter = state.damagesTypeFilter || 'all';
+    var filtered = typeFilter === 'all' ? all : all.filter(function (d) { return damageIssueCode(d.issueType) === typeFilter; });
+    var open = filtered.filter(function (d) { return !d.done; });
+    var closed = filtered.filter(function (d) { return d.done; });
+
+    var filterHtml = damageTypeFilterBar(all);
+
+    var openHtml;
+    if (!open.length) {
+      openHtml = '<div class="empty-state">No open damages' + (typeFilter !== 'all' ? ' for this filter' : '') + '.</div>';
+    } else {
+      // Respect the toolbar's Grid/List toggle, same as the Mind Chunk tab.
+      var itemHtml = state.view === 'list' ? damageRow : damageCard;
+      var groupClass = state.view === 'list' ? 'task-list' : 'wall';
+      openHtml = '<div class="' + groupClass + '">' + open.map(function (d) {
+        return String(state.editingDamageId) === String(d.id) ? damageEditForm(d) : itemHtml(d);
+      }).join('') + '</div>';
+    }
+
+    // "Show closed" sits at the very bottom, below the open items - same spot/pattern as the
+    // Mind Chunk tab's "Show completed" - and closed items render as compact line items, not cards.
+    var toggleHtml = '<div class="closed-toggle-row"><button type="button" class="tag-chip damages-closed-toggle-btn" aria-pressed="' + String(!!state.damagesShowClosed) + '">✓ Show closed <span class="mono">' + closed.length + '</span></button></div>';
+    var closedHtml = '';
+    if (state.damagesShowClosed) {
+      closedHtml = closed.length
+        ? '<div class="section-label">✓ Closed <span class="count mono">' + closed.length + '</span><span class="closed-hint">— click one to reopen it</span></div>' +
+          '<div class="closed-list">' + closed.map(damageClosedRow).join('') + '</div>'
+        : '<div class="empty-state">Nothing closed yet' + (typeFilter !== 'all' ? ' for this filter' : '') + '.</div>';
+    }
+
+    damagesView.innerHTML = filterHtml + openHtml + toggleHtml + closedHtml;
+    wireDamagesEvents();
+  }
+
+  function wireDamagesEvents() {
+    var toggleBtn = damagesView.querySelector('.damages-closed-toggle-btn');
+    if (toggleBtn) toggleBtn.addEventListener('click', function () { state.damagesShowClosed = !state.damagesShowClosed; renderDamages(); });
+    var typeSelect = damagesView.querySelector('.damage-type-filter-select');
+    if (typeSelect) typeSelect.addEventListener('change', function () {
+      state.damagesTypeFilter = typeSelect.value;
+      renderDamages();
+    });
+    Array.prototype.forEach.call(damagesView.querySelectorAll('.damage-closed-row'), function (rowEl) {
+      rowEl.addEventListener('click', function () {
+        var id = rowEl.getAttribute('data-id');
+        rowEl.style.opacity = '0.4';
+        rowEl.style.pointerEvents = 'none';
+        postAction({ action: 'toggleDamageDone', id: id }).then(function () { loadDamages(); }).catch(function () { loadDamages(); });
+      });
+    });
+    Array.prototype.forEach.call(damagesView.querySelectorAll('.damage-card, .damage-row'), function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('button')) return;
+        var id = card.getAttribute('data-id');
+        state.expandedDamageId = String(state.expandedDamageId) === String(id) ? null : id;
+        renderDamages();
+      });
+    });
+    Array.prototype.forEach.call(damagesView.querySelectorAll('.damage-toggle-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var id = btn.getAttribute('data-id');
+        btn.disabled = true;
+        postAction({ action: 'toggleDamageDone', id: id }).then(function () { loadDamages(); }).catch(function () { btn.disabled = false; });
+      });
+    });
+    Array.prototype.forEach.call(damagesView.querySelectorAll('.damage-edit-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        state.editingDamageId = btn.getAttribute('data-id');
+        renderDamages();
+      });
+    });
+    Array.prototype.forEach.call(damagesView.querySelectorAll('.damage-cancel-btn'), function (btn) {
+      btn.addEventListener('click', function () { state.editingDamageId = null; renderDamages(); });
+    });
+    Array.prototype.forEach.call(damagesView.querySelectorAll('.damage-save-btn'), function (btn) {
+      btn.addEventListener('click', function () {
+        var wrap = btn.closest('.note.is-editing');
+        var id = wrap.getAttribute('data-id');
+        var unitNumber = wrap.querySelector('.edit-damage-unit').value.trim();
+        var itemCode = wrap.querySelector('.edit-damage-itemcode').value.trim();
+        var itemDescription = wrap.querySelector('.edit-damage-itemdesc').value.trim();
+        var issueType = wrap.querySelector('.edit-damage-issuetype').value.trim();
+        var issueDescription = wrap.querySelector('.edit-damage-issuedesc').value.trim();
+        var dateReported = wrap.querySelector('.edit-damage-datereported').value;
+        btn.disabled = true;
+        postAction({ action: 'editDamage', id: id, unitNumber: unitNumber, itemCode: itemCode, itemDescription: itemDescription, issueType: issueType, issueDescription: issueDescription, dateReported: dateReported }).then(function () {
+          state.editingDamageId = null;
+          loadDamages();
+        }).catch(function () { btn.disabled = false; });
+      });
+    });
+  }
+
+  async function loadMeetingNotes() {
+    meetingsList.innerHTML = '<div class="status-state">Loading…</div>';
+    try {
+      var res = await fetch(CONFIG.API_URL + '?key=' + encodeURIComponent(CONFIG.KEY) + '&sheet=meetings', { method: 'GET' });
+      var data = await res.json();
+      if (data.error) throw new Error(data.error);
+      state.meetingNotes = (data.notes || []).slice().sort(function (a, b) {
+        var cmp = (b.date || '').localeCompare(a.date || '');
+        return cmp !== 0 ? cmp : Number(b.id) - Number(a.id);
+      });
+      state.meetingsLoaded = true;
+      if (state.activeTab === 'meetings') renderMeetings();
+    } catch (err) {
+      meetingsList.innerHTML = '<div class="status-state">Couldn\'t load meeting notes.<span class="mono">' + escapeHtml((err && err.message) || '') + '</span></div>';
+    }
+  }
+
+  function meetingCard(m) {
+    var expanded = String(state.expandedMeetingId) === String(m.id);
+    var body = expanded ? '<div class="meeting-body">' + escapeHtml(m.notes || '(no notes)') + '</div>' : '';
+    return '<div class="note meeting-card" data-id="' + escapeHtml(m.id) + '">' +
+      '<div class="note-top"><span class="note-date mono">' + escapeHtml(m.date || '') + '</span>' +
+      '<div class="note-actions"><button type="button" class="note-edit-btn meeting-edit-btn" data-id="' + escapeHtml(m.id) + '" title="Edit" aria-label="Edit">✎</button></div></div>' +
+      '<div class="note-title">' + escapeHtml(m.title || '(untitled meeting)') + '</div>' +
+      body +
+      '</div>';
+  }
+
+  function meetingEditForm(m) {
+    return '<div class="note is-editing" data-id="' + escapeHtml(m.id) + '">' +
+      '<div class="edit-field-row"><input type="text" class="edit-meeting-title" placeholder="Meeting title / about" value="' + escapeHtml(m.title || '') + '"></div>' +
+      '<div class="edit-field-row"><input type="date" class="edit-meeting-date" value="' + escapeHtml(m.date || '') + '"></div>' +
+      '<div class="edit-field-row"><textarea class="edit-meeting-notes" placeholder="Notes">' + escapeHtml(m.notes || '') + '</textarea></div>' +
+      '<div class="edit-actions"><button type="button" class="meeting-delete-btn" style="margin-right:auto;border:1px solid var(--line);background:var(--card);color:#b91c3c;font-weight:600;font-size:0.78rem;border-radius:8px;padding:6px 14px;cursor:pointer;">Delete</button>' +
+      '<button type="button" class="edit-cancel-btn meeting-cancel-btn">Cancel</button><button type="button" class="edit-save-btn meeting-save-btn">Save</button></div>' +
+      '</div>';
+  }
+
+  function renderMeetings() {
+    var project = currentTabProject();
+    if (!state.meetingsLoaded) {
+      if (project) loadMeetingNotes();
+      return;
+    }
+    var filtered = state.meetingNotes.filter(function (m) { return (m.project || '').trim() === project; });
+    if (!filtered.length) {
+      meetingsList.innerHTML = '<div class="empty-state">No meetings logged yet for ' + escapeHtml(project || '') + '.</div>';
+      return;
+    }
+    meetingsList.innerHTML = '<div class="wall">' + filtered.map(function (m) {
+      return String(state.editingMeetingId) === String(m.id) ? meetingEditForm(m) : meetingCard(m);
+    }).join('') + '</div>';
+    wireMeetingsEvents();
+  }
+
+  function wireMeetingsEvents() {
+    Array.prototype.forEach.call(meetingsList.querySelectorAll('.meeting-card'), function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('.note-actions')) return;
+        var id = card.getAttribute('data-id');
+        state.expandedMeetingId = String(state.expandedMeetingId) === String(id) ? null : id;
+        renderMeetings();
+      });
+    });
+    Array.prototype.forEach.call(meetingsList.querySelectorAll('.meeting-edit-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        state.editingMeetingId = btn.getAttribute('data-id');
+        renderMeetings();
+      });
+    });
+    Array.prototype.forEach.call(meetingsList.querySelectorAll('.meeting-cancel-btn'), function (btn) {
+      btn.addEventListener('click', function () { state.editingMeetingId = null; renderMeetings(); });
+    });
+    Array.prototype.forEach.call(meetingsList.querySelectorAll('.meeting-save-btn'), function (btn) {
+      btn.addEventListener('click', function () {
+        var wrap = btn.closest('.note.is-editing');
+        var id = wrap.getAttribute('data-id');
+        var title = wrap.querySelector('.edit-meeting-title').value.trim();
+        var date = wrap.querySelector('.edit-meeting-date').value;
+        var notes = wrap.querySelector('.edit-meeting-notes').value;
+        if (!title) return;
+        btn.disabled = true;
+        postAction({ action: 'editMeetingNote', id: id, title: title, date: date, notes: notes }).then(function () {
+          state.editingMeetingId = null;
+          loadMeetingNotes();
+        }).catch(function () { btn.disabled = false; });
+      });
+    });
+    Array.prototype.forEach.call(meetingsList.querySelectorAll('.meeting-delete-btn'), function (btn) {
+      btn.addEventListener('click', function () {
+        var wrap = btn.closest('.note.is-editing');
+        var id = wrap.getAttribute('data-id');
+        if (!window.confirm("Delete this meeting note? This can't be undone.")) return;
+        btn.disabled = true;
+        postAction({ action: 'deleteMeetingNote', id: id }).then(function () {
+          state.editingMeetingId = null;
+          loadMeetingNotes();
+        }).catch(function () { btn.disabled = false; });
+      });
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function issuedLabel(it) {
+    var age = ageLabel(it.dateIssued);
+    return (it.dateIssued ? escapeHtml(it.dateIssued) : '') + (age ? ' · ' + age : '');
+  }
+
+  function isReminder(it) { return String(it.priority) === 'R'; }
+
+  function priorityPillHtml(it) {
+    if (isReminder(it)) return '<span class="pill pill-reminder">🔔 Reminder</span>';
+    return '<span class="pill" style="background:var(--tag-gray-bg);color:var(--tag-gray-tx)">P' + escapeHtml(it.priority) + '</span>';
+  }
+
+  function editForm(it) {
+    var priorities = ['R', '1', '2', '3'];
+    var options = priorities.map(function (p) {
+      var label = p === 'R' ? '🔔 Reminder' : ('P' + p + (p === '1' ? ' · pinned' : ''));
+      var sel = String(it.priority) === p ? ' selected' : '';
+      return '<option value="' + p + '"' + sel + '>' + label + '</option>';
+    }).join('');
+    return '<div class="note is-editing" data-id="' + escapeHtml(it.id) + '">' +
+      '<div class="edit-field-row"><input type="text" class="edit-project" list="projectOptions" placeholder="Project" value="' + escapeHtml(it.project || '') + '"></div>' +
+      '<div class="edit-field-row"><input type="text" class="edit-who" placeholder="Who\'s court" value="' + escapeHtml(it.who || '') + '"></div>' +
+      '<div class="edit-field-row"><select class="edit-priority">' + options + '</select></div>' +
+      '<div class="edit-field-row"><textarea class="edit-notes" placeholder="Notes (hidden — only shown on hover)">' + escapeHtml(it.notes || '') + '</textarea></div>' +
+      '<div class="edit-actions"><button type="button" class="edit-cancel-btn">Cancel</button><button type="button" class="edit-save-btn">Save</button></div>' +
+      '</div>';
+  }
+
+  function noteExpandBlock(it) {
+    var isEditingNote = String(state.editingNoteId) === String(it.id);
+    if (isEditingNote) {
+      return '<div class="note-expand" data-note-id="' + escapeHtml(it.id) + '">' +
+        '<textarea class="note-quick-edit-input" placeholder="Notes">' + escapeHtml(it.notes || '') + '</textarea>' +
+        '<div class="note-expand-actions">' +
+        '<button type="button" class="note-quick-cancel-btn" data-id="' + escapeHtml(it.id) + '" title="Cancel" aria-label="Cancel">✕</button>' +
+        '<button type="button" class="note-quick-save-btn" data-id="' + escapeHtml(it.id) + '">Save</button>' +
+        '</div></div>';
+    }
+    return '<div class="note-expand" data-note-id="' + escapeHtml(it.id) + '">' +
+      '<div class="note-expand-text">' + escapeHtml(it.notes || '') + '</div>' +
+      '<div class="note-expand-actions">' +
+      '<button type="button" class="note-quick-edit-btn" data-id="' + escapeHtml(it.id) + '" title="Edit note" aria-label="Edit note">✎</button>' +
+      '<button type="button" class="note-quick-close-btn" data-id="' + escapeHtml(it.id) + '" title="Close" aria-label="Close">✕</button>' +
+      '</div></div>';
+  }
+
+  function noteCard(it, isPinned) {
+    if (String(state.editingId) === String(it.id)) return editForm(it);
+    var color = hashColor(it.project || 'general');
+    var tags = '';
+    if (it.project) tags += '<span class="pill" style="background:var(--' + color + '-bg);color:var(--' + color + '-tx)">#' + escapeHtml(it.project.replace(/\s+/g,'')) + '</span>';
+    if (!isPinned) tags += priorityPillHtml(it);
+    if (it.who) tags += '<span class="pill pill-who">' + escapeHtml(it.who) + '</span>';
+    if (it.notes) tags += '<button type="button" class="note-icon-btn" data-id="' + escapeHtml(it.id) + '" title="View note" aria-label="View note">📝</button>';
+    var expanded = it.notes && String(state.expandedNoteId) === String(it.id);
+    return '<div class="note p' + escapeHtml(it.priority) + (isPinned ? ' is-pinned' : '') + '" data-id="' + escapeHtml(it.id) + '">' +
+      '<div class="note-top"><span class="note-date mono">' + issuedLabel(it) + '</span>' +
+      '<div class="note-actions"><button type="button" class="note-edit-btn" data-id="' + escapeHtml(it.id) + '" title="Edit" aria-label="Edit">✎</button>' +
+      '<input type="checkbox" class="note-check" aria-label="Mark done"></div></div>' +
+      '<div class="note-title">' + escapeHtml(it.task) + '</div>' +
+      '<div class="note-tags">' + tags + '</div>' +
+      (expanded ? noteExpandBlock(it) : '') +
+      '</div>';
+  }
+
+  function taskRow(it, isPinned) {
+    if (String(state.editingId) === String(it.id)) return editForm(it);
+    var color = hashColor(it.project || 'general');
+    var tags = '';
+    if (it.project) tags += '<span class="pill" style="background:var(--' + color + '-bg);color:var(--' + color + '-tx)">#' + escapeHtml(it.project.replace(/\s+/g,'')) + '</span>';
+    tags += priorityPillHtml(it);
+    if (it.who) tags += '<span class="pill pill-who">' + escapeHtml(it.who) + '</span>';
+    if (it.notes) tags += '<button type="button" class="note-icon-btn" data-id="' + escapeHtml(it.id) + '" title="View note" aria-label="View note">📝</button>';
+    var expanded = it.notes && String(state.expandedNoteId) === String(it.id);
+    return '<div class="task-row p' + escapeHtml(it.priority) + (isPinned ? ' is-pinned' : '') + (expanded ? ' is-note-expanded' : '') + '" data-id="' + escapeHtml(it.id) + '">' +
+      '<div class="task-row-main">' +
+      '<button type="button" class="note-edit-btn" data-id="' + escapeHtml(it.id) + '" title="Edit" aria-label="Edit">✎</button>' +
+      '<input type="checkbox" class="note-check" aria-label="Mark done">' +
+      '<span class="task-row-title">' + escapeHtml(it.task) + '</span>' + tags +
+      '<span class="task-row-date mono">' + issuedLabel(it) + '</span>' +
+      '</div>' +
+      (expanded ? noteExpandBlock(it) : '') +
+      '</div>';
+  }
+
+  function matchesTagFilter(it) {
+    if (state.filter === 'all') return true;
+    if (state.filter === 'reminder') return isReminder(it);
+    if (state.filter === 'p1' || state.filter === 'p2' || state.filter === 'p3') {
+      return String(it.priority) === state.filter.slice(1);
+    }
+    return it.project === state.filter;
+  }
+
+  function matchesWhoFilter(it) {
+    if (state.whoFilter === 'all') return true;
+    if (state.whoFilter === 'edwin') return (it.who || '').trim().toLowerCase() === 'edwin';
+    if (state.whoFilter === 'others') return (it.who || '').trim().toLowerCase() !== 'edwin';
+    return true;
+  }
+
+  function closedRow(it) {
+    var color = hashColor(it.project || 'general');
+    var tag = it.project ? '<span class="pill" style="background:var(--' + color + '-bg);color:var(--' + color + '-tx)">#' + escapeHtml(it.project.replace(/\s+/g,'')) + '</span>' : '';
+    var whoTag = it.who ? '<span class="pill pill-who">' + escapeHtml(it.who) + '</span>' : '';
+    var dateRange = (it.dateIssued ? escapeHtml(it.dateIssued) + ' → ' : '') + escapeHtml(it.dateClosed || '');
+    return '<div class="closed-row" data-id="' + escapeHtml(it.id) + '" title="Click to mark as open again"><span class="closed-check">✓</span>' +
+      '<span class="closed-title">' + escapeHtml(it.task) + '</span>' + tag + whoTag +
+      '<span class="closed-date mono">' + dateRange + '</span></div>';
+  }
+
+  function renderClosed() {
+    var filtered = state.closedItems.filter(matchesTagFilter).filter(matchesWhoFilter);
+    closedCount.textContent = filtered.length ? '(' + filtered.length + ')' : '';
+    closedToggleBtn.setAttribute('aria-pressed', String(state.showClosed));
+    if (!state.showClosed) { closedSection.innerHTML = ''; return; }
+    if (!filtered.length) {
+      closedSection.innerHTML = '<div class="empty-state">Nothing checked off yet' + (state.filter === 'all' ? '' : ' for this filter') + '.</div>';
+      return;
+    }
+    closedSection.innerHTML = '<div class="section-label">✓ Completed <span class="count mono">' + filtered.length + '</span><span class="closed-hint">— click one to reopen it</span></div>' +
+      '<div class="closed-list">' + filtered.map(closedRow).join('') + '</div>';
+    Array.prototype.forEach.call(closedSection.querySelectorAll('.closed-row'), function (rowEl) {
+      rowEl.addEventListener('click', function () {
+        var id = rowEl.getAttribute('data-id');
+        rowEl.style.opacity = '0.4';
+        rowEl.style.pointerEvents = 'none';
+        postAction({ action: 'toggleDone', id: id }).then(function () { loadItems(true); }).catch(function () { loadItems(true); });
+      });
+    });
+  }
+
+  function render() {
+    var q = state.search.trim().toLowerCase();
+    var visible = state.items.filter(function (it) {
+      if (!matchesTagFilter(it)) return false;
+      if (!matchesWhoFilter(it)) return false;
+      if (q && (it.task || '').toLowerCase().indexOf(q) === -1 && (it.project || '').toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+    visible.sort(function (a, b) {
+      if (state.sort === 'pri-asc') return Number(a.priority) - Number(b.priority);
+      if (state.sort === 'pri-desc') return Number(b.priority) - Number(a.priority);
+      var cmp = (a.dateIssued || '').localeCompare(b.dateIssued || '');
+      return state.sort === 'newest' ? -cmp : cmp;
+    });
+
+
+    var projects = Array.from(new Set(state.items.map(function (it) { return it.project; }).filter(Boolean))).sort();
+    var chipsHtml = '<button class="tag-chip" data-f="all" aria-pressed="' + (state.filter === 'all') + '">All</button>';
+    chipsHtml += '<button class="tag-chip" data-f="reminder" aria-pressed="' + (state.filter === 'reminder') + '">🔔 Reminders</button>';
+    chipsHtml += '<button class="tag-chip" data-f="p1" aria-pressed="' + (state.filter === 'p1') + '">#P1</button>';
+    chipsHtml += '<button class="tag-chip" data-f="p2" aria-pressed="' + (state.filter === 'p2') + '">#P2</button>';
+    chipsHtml += '<button class="tag-chip" data-f="p3" aria-pressed="' + (state.filter === 'p3') + '">#P3</button>';
+    projects.forEach(function (p) {
+      chipsHtml += '<button class="tag-chip" data-f="' + escapeHtml(p) + '" aria-pressed="' + (state.filter === p) + '">#' + escapeHtml(p.replace(/\s+/g,'')) + '</button>';
+    });
+    tagbar.innerHTML = chipsHtml;
+    Array.prototype.forEach.call(tagbar.querySelectorAll('.tag-chip'), function (chip) {
+      chip.addEventListener('click', function () { state.filter = chip.getAttribute('data-f'); state.damagesTypeFilter = 'all'; render(); });
+    });
+
+    var projectOptionsEl = document.getElementById('projectOptions');
+    if (projectOptionsEl) {
+      var allProjectNames = Array.from(new Set(
+        state.items.concat(state.closedItems).map(function (it) { return (it.project || '').trim(); }).filter(Boolean)
+      )).sort();
+      projectOptionsEl.innerHTML = allProjectNames.map(function (p) { return '<option value="' + escapeHtml(p) + '"></option>'; }).join('');
+    }
+
+    var isProjectFilter = isProjectFilterValue(state.filter);
+    var titleText = 'All';
+    if (state.filter === 'reminder') titleText = '🔔 Reminders';
+    else if (state.filter === 'p1') titleText = 'Priority 1';
+    else if (state.filter === 'p2') titleText = 'Priority 2';
+    else if (state.filter === 'p3') titleText = 'Priority 3';
+    else if (isProjectFilter) titleText = state.filter;
+    sectionTitleEl.textContent = titleText;
+    sectionEditBtn.classList.toggle('is-visible', isProjectFilter);
+    colorPickerRow.style.display = 'none';
+    colorPickerRow.innerHTML = '';
+    whoSelect.classList.toggle('is-filtered', state.whoFilter !== FILTER_DEFAULTS.whoFilter);
+    sortSelect.classList.toggle('is-filtered', state.sort !== FILTER_DEFAULTS.sort);
+
+    var tabsEligible = perProjectTabsEligible(state.filter);
+    var disabledTabTitle = !isProjectFilter ? 'Select a project to view this' : 'Not tracked for ' + state.filter;
+    [tabMeetingNotes, tabLogistics, tabDamages].forEach(function (btn) {
+      btn.disabled = !tabsEligible;
+      btn.title = tabsEligible ? '' : disabledTabTitle;
+    });
+    refreshTabCounts();
+    if (PER_PROJECT_TABS[state.activeTab] && !tabsEligible) {
+      setActiveTab('dashboard');
+    } else if (state.activeTab === 'meetings') {
+      renderMeetings();
+    } else if (state.activeTab === 'logistics') {
+      renderLogistics();
+    } else if (state.activeTab === 'damages') {
+      renderDamages();
+    }
+
+    if (state.items.length === 0) {
+      remindersSection.innerHTML = '';
+      pinnedSection.innerHTML = '';
+      wallSection.innerHTML = '<div class="empty-state">Nothing open. Add a task above, or forward yourself an email.</div>';
+      renderClosed();
+      return;
+    }
+
+    var reminders = visible.filter(isReminder);
+    var pinned = visible.filter(function (it) { return !isReminder(it) && Number(it.priority) === 1; });
+    var rest = visible.filter(function (it) { return !isReminder(it) && Number(it.priority) !== 1; });
+
+    var itemHtml = state.view === 'list' ? taskRow : noteCard;
+    var groupClass = state.view === 'list' ? 'task-list' : 'wall';
+
+    if (reminders.length) {
+      remindersSection.innerHTML = '<div class="section-label">🔔 Reminders <span class="count mono">' + reminders.length + '</span></div>' +
+        '<div class="' + groupClass + '">' + reminders.map(function (it) { return itemHtml(it, false); }).join('') + '</div>';
+    } else {
+      remindersSection.innerHTML = '';
+    }
+
+    if (pinned.length && state.filter !== 'p2' && state.filter !== 'p3') {
+      pinnedSection.innerHTML = '<div class="section-label">📌 Pinned <span class="count mono">' + pinned.length + '</span></div>' +
+        '<div class="' + groupClass + '">' + pinned.map(function (it) { return itemHtml(it, true); }).join('') + '</div>';
+    } else {
+      pinnedSection.innerHTML = '';
+    }
+
+    if (rest.length) {
+      wallSection.innerHTML = '<div class="section-label">Everything else <span class="count mono">' + rest.length + '</span></div>' +
+        '<div class="' + groupClass + '">' + rest.map(function (it) { return itemHtml(it, false); }).join('') + '</div>';
+    } else if (!pinned.length && !reminders.length) {
+      wallSection.innerHTML = '<div class="empty-state">No items match this filter.</div>';
+    } else {
+      wallSection.innerHTML = '';
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('.note-check'), function (box) {
+      box.addEventListener('change', function () {
+        var noteEl = box.closest('.note, .task-row');
+        var id = noteEl.getAttribute('data-id');
+        noteEl.classList.add('is-removing');
+        postAction({ action: 'toggleDone', id: id }).then(function () {
+          state.items = state.items.filter(function (it) { return String(it.id) !== String(id); });
+          render();
+        }).catch(function () { loadItems(true); });
+      });
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('.note-edit-btn'), function (btn) {
+      btn.addEventListener('click', function () {
+        state.editingId = btn.getAttribute('data-id');
+        render();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.edit-cancel-btn'), function (btn) {
+      btn.addEventListener('click', function () {
+        state.editingId = null;
+        render();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.edit-save-btn'), function (btn) {
+      btn.addEventListener('click', function () {
+        var wrap = btn.closest('.note.is-editing');
+        var id = wrap.getAttribute('data-id');
+        var project = wrap.querySelector('.edit-project').value.trim();
+        var who = wrap.querySelector('.edit-who').value.trim();
+        var priority = wrap.querySelector('.edit-priority').value;
+        var notes = wrap.querySelector('.edit-notes').value;
+        if (!project || !who) return;
+        btn.disabled = true;
+        postAction({ action: 'editTask', id: id, project: project, who: who, priority: priority, notes: notes }).then(function () {
+          state.editingId = null;
+          loadItems(true);
+        }).catch(function () { btn.disabled = false; });
+      });
+    });
+
+    // ---- Note icon: click to expand/collapse, with its own small pencil (edit just the note) + X (close) ----
+    Array.prototype.forEach.call(document.querySelectorAll('.note-icon-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var id = btn.getAttribute('data-id');
+        if (String(state.expandedNoteId) === String(id)) {
+          state.expandedNoteId = null;
+          state.editingNoteId = null;
+        } else {
+          state.expandedNoteId = id;
+          state.editingNoteId = null;
+        }
+        render();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.note-quick-close-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        state.expandedNoteId = null;
+        state.editingNoteId = null;
+        render();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.note-quick-edit-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        state.editingNoteId = btn.getAttribute('data-id');
+        render();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.note-quick-cancel-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        state.editingNoteId = null;
+        render();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.note-quick-save-btn'), function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var id = btn.getAttribute('data-id');
+        var wrap = btn.closest('.note-expand');
+        var notes = wrap.querySelector('.note-quick-edit-input').value;
+        btn.disabled = true;
+        postAction({ action: 'editTask', id: id, notes: notes }).then(function () {
+          state.editingNoteId = null;
+          loadItems(true);
+        }).catch(function () { btn.disabled = false; });
+      });
+    });
+
+    renderClosed();
+  }
+
+  document.getElementById('searchInput').addEventListener('input', function (e) { state.search = e.target.value; render(); });
+  document.getElementById('sortSelect').addEventListener('change', function (e) { state.sort = e.target.value; render(); });
+  var whoSelect = document.getElementById('whoSelect');
+  whoSelect.addEventListener('change', function (e) { state.whoFilter = e.target.value; render(); });
+  var viewGridBtn = document.getElementById('viewGridBtn');
+  var viewListBtn = document.getElementById('viewListBtn');
+  function setView(view) {
+    state.view = view;
+    viewGridBtn.setAttribute('aria-pressed', String(view === 'grid'));
+    viewListBtn.setAttribute('aria-pressed', String(view === 'list'));
+    render();
+  }
+  viewGridBtn.addEventListener('click', function () { setView('grid'); });
+  viewListBtn.addEventListener('click', function () { setView('list'); });
+  closedToggleBtn.addEventListener('click', function () { state.showClosed = !state.showClosed; renderClosed(); });
+  tabMindChunk.addEventListener('click', function () { setActiveTab('dashboard'); });
+  tabMeetingNotes.addEventListener('click', function () { setActiveTab('meetings'); });
+  tabLogistics.addEventListener('click', function () { setActiveTab('logistics'); });
+  tabDamages.addEventListener('click', function () { setActiveTab('damages'); });
+  unassignedDamagesBtn.addEventListener('click', function () { setActiveTab(state.activeTab === 'unassignedDamages' ? 'dashboard' : 'unassignedDamages'); });
+
+  document.getElementById('meetingDateInput').value = todayISO();
+  document.getElementById('addMeetingForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var titleInput = document.getElementById('meetingTitleInput');
+    var dateInput = document.getElementById('meetingDateInput');
+    var notesInput = document.getElementById('meetingNotesInput');
+    var btn = document.getElementById('addMeetingBtn');
+    var title = titleInput.value.trim();
+    var project = currentTabProject();
+    var date = dateInput.value;
+    var notes = notesInput.value.trim();
+    if (!title || !project || !date) return;
+    btn.disabled = true;
+    postAction({ action: 'addMeetingNote', title: title, project: project, date: date, notes: notes }).then(function () {
+      titleInput.value = ''; notesInput.value = ''; btn.disabled = false;
+      loadMeetingNotes();
+    }).catch(function () { btn.disabled = false; });
+  });
+
+  // ---- Logistics: save/update the current project's preview link (Sheet-backed, 3rd tab) ----
+  document.getElementById('addLogisticsForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var project = currentTabProject();
+    if (!project) return;
+    var url = logisticsLinkInput.value.trim();
+    var btn = document.getElementById('saveLogisticsBtn');
+    btn.disabled = true;
+    postAction({ action: 'saveLogisticsLink', project: project, url: url }).then(function () {
+      state.logisticsLinks[project] = url;
+      btn.disabled = false;
+      renderLogistics();
+    }).catch(function () { btn.disabled = false; });
+  });
+
+  // ---- Damages: log a new open item for the current project (Sheet-backed, 4th tab) ----
+  document.getElementById('damageDateInput').value = todayISO();
+  document.getElementById('damageIssueTypeInput').innerHTML = damageIssueTypeSelectOptions('');
+  document.getElementById('addDamageForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var project = currentTabProject();
+    if (!project) return;
+    var unitInput = document.getElementById('damageUnitInput');
+    var itemCodeInput = document.getElementById('damageItemCodeInput');
+    var itemDescInput = document.getElementById('damageItemDescInput');
+    var issueTypeInput = document.getElementById('damageIssueTypeInput');
+    var issueDescInput = document.getElementById('damageIssueDescInput');
+    var dateInput = document.getElementById('damageDateInput');
+    var btn = document.getElementById('addDamageBtn');
+    var unitNumber = unitInput.value.trim();
+    var dateReported = dateInput.value;
+    if (!unitNumber || !dateReported) return;
+    btn.disabled = true;
+    postAction({
+      action: 'addDamage',
+      project: project,
+      unitNumber: unitNumber,
+      itemCode: itemCodeInput.value.trim(),
+      itemDescription: itemDescInput.value.trim(),
+      issueType: issueTypeInput.value.trim(),
+      issueDescription: issueDescInput.value.trim(),
+      dateReported: dateReported
+    }).then(function () {
+      unitInput.value = ''; itemCodeInput.value = ''; itemDescInput.value = ''; issueTypeInput.value = ''; issueDescInput.value = '';
+      dateInput.value = todayISO();
+      btn.disabled = false;
+      loadDamages();
+    }).catch(function () { btn.disabled = false; });
+  });
+
+  // ---- Section header pencil: pick a custom tag color for the current project, or rename it ----
+  sectionEditBtn.addEventListener('click', function () {
+    var project = state.filter;
+    if (colorPickerRow.style.display === 'flex') {
+      colorPickerRow.style.display = 'none';
+      colorPickerRow.innerHTML = '';
+      return;
+    }
+    var activeColor = hashColor(project);
+    var swatchHtml = '<div class="swatch-row">';
+    TAG_PALETTE.forEach(function (key) {
+      swatchHtml += '<button type="button" class="color-swatch' + (key === activeColor ? ' is-active' : '') +
+        '" data-color="' + key + '" style="background:var(--' + key + '-tx)" title="' + key + '" aria-label="Use this color"></button>';
+    });
+    swatchHtml += '</div>';
+    var renameHtml = '<div class="rename-row">' +
+      '<input type="text" id="renameProjectInput" value="' + escapeHtml(project) + '" maxlength="60">' +
+      '<button type="button" id="renameProjectBtn">Rename</button>' +
+      '<span class="rename-hint" id="renameHint">Renames this project on every item</span>' +
+      '</div>';
+    colorPickerRow.innerHTML = swatchHtml + renameHtml;
+    colorPickerRow.style.display = 'flex';
+
+    Array.prototype.forEach.call(colorPickerRow.querySelectorAll('.color-swatch'), function (sw) {
+      sw.addEventListener('click', function () {
+        projectColorOverrides[project] = sw.getAttribute('data-color');
+        try { localStorage.setItem(PROJECT_COLOR_KEY, JSON.stringify(projectColorOverrides)); } catch (e) {}
+        colorPickerRow.style.display = 'none';
+        colorPickerRow.innerHTML = '';
+        render();
+      });
+    });
+
+    var renameInput = document.getElementById('renameProjectInput');
+    var renameBtn = document.getElementById('renameProjectBtn');
+    var renameHint = document.getElementById('renameHint');
+    function doRename() {
+      var newName = renameInput.value.trim();
+      if (!newName || newName === project) return;
+      renameBtn.disabled = true;
+      renameHint.textContent = 'Renaming…';
+      postAction({ action: 'renameProject', oldName: project, newName: newName }).then(function () {
+        if (projectColorOverrides[project]) {
+          projectColorOverrides[newName] = projectColorOverrides[project];
+          delete projectColorOverrides[project];
+          try { localStorage.setItem(PROJECT_COLOR_KEY, JSON.stringify(projectColorOverrides)); } catch (e) {}
+        }
+        state.filter = newName;
+        colorPickerRow.style.display = 'none';
+        colorPickerRow.innerHTML = '';
+        loadItems(true);
+      }).catch(function () {
+        renameBtn.disabled = false;
+        renameHint.textContent = "Couldn't reach the sheet — try again.";
+      });
+    }
+    renameBtn.addEventListener('click', doRename);
+    renameInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); doRename(); } });
+  });
+
+  // ---- Theme toggle (light/dark), remembered per-browser ----
+  var THEME_KEY = 'mc-theme';
+  var themeToggleBtn = document.getElementById('themeToggleBtn');
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    themeToggleBtn.textContent = theme === 'light' ? '☀️' : '🌙';
+    themeToggleBtn.title = theme === 'light' ? 'Switch to dark' : 'Switch to light';
+  }
+  (function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+    applyTheme(saved === 'light' ? 'light' : 'dark');
+  })();
+  themeToggleBtn.addEventListener('click', function () {
+    var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = current === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  });
+
+  // ---- Today's date + week-of-year badge ----
+  function isoWeekInfo(d) {
+    var date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    var dayNum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    var weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+    return { week: weekNo, year: date.getUTCFullYear() };
+  }
+  (function renderDateBadge() {
+    var now = new Date();
+    var wk = isoWeekInfo(now);
+    var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var dateBadge = document.getElementById('dateBadge');
+    if (dateBadge) dateBadge.textContent = dayNames[now.getDay()] + ', ' + monthNames[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear() + ' (Week ' + wk.week + ')';
+  })();
+
+  // ---- Print report: 14-day closed summary + what's open in others' court ----
+  function buildPrintReport() {
+    var now = new Date();
+    var cutoff = new Date(now.getTime() - 14 * 86400000);
+    function within14(dateStr) {
+      if (!dateStr) return false;
+      var dt = new Date(dateStr + "T00:00:00");
+      return !isNaN(dt) && dt >= cutoff;
+    }
+    var closedRecent = state.closedItems.filter(function (it) { return within14(it.dateClosed); });
+    var byProjectClosed = {};
+    closedRecent.forEach(function (it) {
+      var p = it.project || 'No project';
+      (byProjectClosed[p] = byProjectClosed[p] || []).push(it);
+    });
+    var othersOpen = state.items.filter(function (it) { return (it.who || '').trim().toLowerCase() !== 'edwin'; });
+    var byWhoOpen = {};
+    othersOpen.forEach(function (it) {
+      var w = it.who || 'Unknown';
+      (byWhoOpen[w] = byWhoOpen[w] || []).push(it);
+    });
+
+    var html = '<h1>📌 Mind Chunk — Report</h1>';
+    html += '<div class="report-date mono">Generated ' + escapeHtml(now.toLocaleDateString()) + '</div>';
+
+    html += '<h2>Closed in the last 14 days (' + closedRecent.length + ')</h2>';
+    if (!closedRecent.length) {
+      html += '<p>Nothing closed in this window.</p>';
+    } else {
+      Object.keys(byProjectClosed).sort().forEach(function (p) {
+        html += '<h3>' + escapeHtml(p) + '</h3><ul>';
+        byProjectClosed[p].forEach(function (it) {
+          html += '<li>' + escapeHtml(it.task) + ' <span class="mono">(closed ' + escapeHtml(it.dateClosed || '') + ')</span></li>';
+        });
+        html += '</ul>';
+      });
+    }
+
+    html += '<h2>Open — waiting in other people\'s court (' + othersOpen.length + ')</h2>';
+    if (!othersOpen.length) {
+      html += '<p>Nothing waiting on anyone else right now.</p>';
+    } else {
+      Object.keys(byWhoOpen).sort().forEach(function (w) {
+        html += '<h3>' + escapeHtml(w) + '</h3><ul>';
+        byWhoOpen[w].forEach(function (it) {
+          html += '<li>' + escapeHtml(it.task) + ' <span class="mono">[' + escapeHtml(it.project || '') + ', P' + escapeHtml(it.priority) + ']</span></li>';
+        });
+        html += '</ul>';
+      });
+    }
+
+    document.getElementById('printReport').innerHTML = html;
+  }
+  document.getElementById('printReportBtn').addEventListener('click', function () {
+    buildPrintReport();
+    window.print();
+  });
+
+  document.getElementById('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var taskInput = document.getElementById('addTaskInput');
+    var projectInput = document.getElementById('addProjectInput');
+    var whoInput = document.getElementById('addWhoInput');
+    var priorityInput = document.getElementById('addPriorityInput');
+    var notesInput = document.getElementById('addNotesInput');
+    var btn = document.getElementById('addBtn');
+    var task = taskInput.value.trim();
+    var project = projectInput.value.trim();
+    var who = whoInput.value.trim();
+    var priority = priorityInput.value;
+    var notes = notesInput.value.trim();
+    if (!task || !project || !who || !priority) return;
+    btn.disabled = true;
+    postAction({
+      action: 'addTask', task: task,
+      project: project,
+      priority: priority === 'R' ? 'R' : Number(priority),
+      who: who,
+      notes: notes
+    }).then(function () {
+      taskInput.value = ''; projectInput.value = ''; whoInput.value = ''; priorityInput.value = ''; notesInput.value = ''; btn.disabled = false;
+      loadItems(true);
+    }).catch(function () { btn.disabled = false; });
+  });
+
+  loadItems(false);
+  loadDamages(); // eager load (not gated behind visiting a project's Damages tab) so the Unassigned badge is accurate from the start
+  // Skip the background refresh while something is actively being edited — it was
+  // silently rebuilding the card/list every 45s and wiping out in-progress typing.
+  setInterval(function () {
+    if (state.editingId || state.editingMeetingId || state.editingNoteId) return;
+    loadItems(true);
+  }, POLL_MS);
+})();
+</script>
+</body>
+</html>
