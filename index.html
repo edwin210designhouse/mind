@@ -1730,14 +1730,18 @@
     document.getElementById('searchInput').value = '';
     state.expandedNoteId = null;
     state.editingId = null;
+    state.items = [];
+    state.closedItems = [];
     setActiveTab('dashboard');
     [tabMeetingNotes, tabLogistics, tabDamages].forEach(function (btn) {
       btn.style.display = state.mode === 'personal' ? 'none' : '';
     });
     tagbar.innerHTML = '';
+    remindersSection.innerHTML = '';
     wallSection.innerHTML = '';
     pinnedSection.innerHTML = '';
     closedSection.innerHTML = '';
+    closedCount.textContent = '';
     refreshUnassignedDamagesBadge();
     loadItems(false);
   });
