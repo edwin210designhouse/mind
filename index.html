@@ -24,6 +24,7 @@
     --pin-bg: #fff7dd; --pin-line: #ecdca3;
     --check-border: #b5b0a2;
     --glow-p1: 217,45,45; --glow-p2: 205,110,20; --glow-p3: 45,140,80; --glow-reminder: 90,90,220;
+    --glow-status-production: 180,140,10; --glow-status-enroute: 40,110,200;
     --reminder-bg: #ece9ff; --reminder-line: #cfc8f7;
     --edit-outline: #171717;
   }
@@ -44,6 +45,7 @@
       --pin-bg: #2c2712; --pin-line: #4a3f1c;
       --check-border: rgba(255,255,255,0.55);
       --glow-p1: 240,90,90; --glow-p2: 235,150,60; --glow-p3: 90,200,140; --glow-reminder: 150,140,255;
+      --glow-status-production: 230,190,70; --glow-status-enroute: 110,170,240;
       --reminder-bg: #26234a; --reminder-line: #423d78;
       --edit-outline: #ffffff;
     }
@@ -64,6 +66,7 @@
     --pin-bg: #2c2712; --pin-line: #4a3f1c;
     --check-border: rgba(255,255,255,0.55);
     --glow-p1: 240,90,90; --glow-p2: 235,150,60; --glow-p3: 90,200,140; --glow-reminder: 150,140,255;
+    --glow-status-production: 230,190,70; --glow-status-enroute: 110,170,240;
     --reminder-bg: #26234a; --reminder-line: #423d78;
     --edit-outline: #ffffff;
   }
@@ -142,8 +145,8 @@
   .rename-row button:disabled { opacity: 0.5; cursor: default; }
   .rename-row .rename-hint { font-size: 0.72rem; color: var(--ink-3); }
 
-  .wall { columns: 250px; column-gap: 14px; }
-  .note { break-inside: avoid; margin-bottom: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 14px; box-shadow: var(--shadow); }
+  .wall { columns: 280px; column-gap: 16px; }
+  .note { break-inside: avoid; margin-bottom: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 13px; padding: 17px; box-shadow: var(--shadow); }
   .note.is-pinned { background: var(--pin-bg); border-color: var(--pin-line); }
   .note.is-removing { opacity: 0.3; }
   .note.p1 { border: 1.5px solid rgba(var(--glow-p1), 0.8); }
@@ -163,7 +166,7 @@
   .note-check:checked { background: var(--accent); border-color: var(--accent); }
   .note-check:checked::after { content: ""; position: absolute; left: 5px; top: 1px; width: 4px; height: 8px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); }
 
-  .note-title { font-weight: 600; font-size: 0.94rem; line-height: 1.35; margin-bottom: 10px; }
+  .note-title { font-weight: 600; font-size: 1rem; line-height: 1.4; margin-bottom: 10px; }
   .note-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
   .pill { font-family: 'Public Sans', sans-serif; font-size: 0.7rem; font-weight: 700; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
   .pill-who { background: var(--tag-gray-bg); color: var(--tag-gray-tx); font-weight: 500; }
@@ -171,7 +174,8 @@
   .note-icon-btn { cursor: pointer; font-size: 0.82rem; opacity: 0.8; border: none; background: transparent; padding: 0; line-height: 1; }
   .note-icon-btn:hover { opacity: 1; }
   .note-expand { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
-  .note-expand-text { font-size: 0.85rem; line-height: 1.5; color: var(--ink-2); white-space: pre-wrap; margin-bottom: 6px; }
+  .note-expand-text { font-size: 0.85rem; line-height: 1.5; color: var(--ink-2); white-space: pre-wrap; margin-bottom: 6px; cursor: pointer; border-radius: 8px; padding: 4px 6px; margin-left: -6px; margin-right: -6px; }
+  .note-expand-text:hover { color: var(--ink); background: var(--card-2); }
   .note-expand-actions { display: flex; gap: 6px; justify-content: flex-end; }
   .note-quick-edit-btn, .note-quick-close-btn, .note-quick-cancel-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #111; cursor: pointer; font-size: 0.7rem; padding: 0; line-height: 1; flex: none; }
   .note-quick-edit-btn:hover, .note-quick-close-btn:hover, .note-quick-cancel-btn:hover { background: #f0f0f0; }
@@ -238,6 +242,19 @@
   .damage-card.is-done .note-title { text-decoration: line-through; text-decoration-color: var(--ink-3); }
   .damage-row.is-done { opacity: 0.55; }
   .damage-row.is-done .task-row-title { text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .damage-status-pill { font-weight: 700; }
+  .damage-status-pill.damage-status-reported { background: rgba(var(--glow-p1), 0.18); color: rgb(var(--glow-p1)); }
+  .damage-status-pill.damage-status-ordered { background: rgba(var(--glow-p2), 0.18); color: rgb(var(--glow-p2)); }
+  .damage-status-pill.damage-status-production { background: rgba(var(--glow-status-production), 0.18); color: rgb(var(--glow-status-production)); }
+  .damage-status-pill.damage-status-enroute { background: rgba(var(--glow-status-enroute), 0.18); color: rgb(var(--glow-status-enroute)); }
+  .damage-status-pill.damage-status-delivered { background: rgba(var(--glow-p3), 0.18); color: rgb(var(--glow-p3)); }
+  .damage-card.damage-status-reported, .damage-row.damage-status-reported { border: 1.5px solid rgba(var(--glow-p1), 0.6); }
+  .damage-card.damage-status-ordered, .damage-row.damage-status-ordered { border: 1.5px solid rgba(var(--glow-p2), 0.6); }
+  .damage-card.damage-status-production, .damage-row.damage-status-production { border: 1.5px solid rgba(var(--glow-status-production), 0.6); }
+  .damage-card.damage-status-enroute, .damage-row.damage-status-enroute { border: 1.5px solid rgba(var(--glow-status-enroute), 0.6); }
+  .damage-card.damage-status-delivered, .damage-row.damage-status-delivered { border: 1.5px solid rgba(var(--glow-p3), 0.6); }
+  .damage-card.is-done.damage-status-reported, .damage-card.is-done.damage-status-ordered, .damage-card.is-done.damage-status-production, .damage-card.is-done.damage-status-enroute, .damage-card.is-done.damage-status-delivered,
+  .damage-row.is-done.damage-status-reported, .damage-row.is-done.damage-status-ordered, .damage-row.is-done.damage-status-production, .damage-row.is-done.damage-status-enroute, .damage-row.is-done.damage-status-delivered { border-color: var(--line); }
   .unassigned-assign-row { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); display: flex; gap: 8px; }
   .unassigned-assign-row select { flex: 1 1 auto; margin-bottom: 0 !important; }
   .unassigned-assign-btn { flex: none; border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.78rem; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
@@ -314,6 +331,7 @@
 <div class="wrap">
   <div class="toolbar">
     <button type="button" class="tag-chip theme-toggle-btn" id="themeToggleBtn" title="Switch light / dark">🌙</button>
+    <button type="button" class="tag-chip" id="modeToggleBtn" title="Switch to Personal">🏢 Work</button>
     <div class="brand"><span class="pin-ico">📌</span>Mind Chunk</div>
     <div class="search"><input type="text" id="searchInput" placeholder="Search open items…"></div>
     <span class="date-badge mono" id="dateBadge"></span>
@@ -388,6 +406,10 @@
         <input type="text" id="damageItemDescInput" placeholder="Item description" maxlength="200" style="flex:1 1 100%">
       </div>
       <div class="row2">
+        <select id="damageStatusInput"></select>
+        <input type="text" id="damageJobNumberInput" placeholder="Job # (optional)" maxlength="60">
+      </div>
+      <div class="row2">
         <textarea id="damageIssueDescInput" placeholder="Issue description" style="flex:1 1 auto"></textarea>
         <button type="submit" id="addDamageBtn">Log damage</button>
       </div>
@@ -457,7 +479,7 @@
     KEY: "Dsv2O6mYUIU4fUDKrw7j8bNy"
   };
 
-  var state = { items: [], closedItems: [], filter: "all", whoFilter: "all", search: "", sort: "pri-desc", view: "grid", showClosed: false, editingId: null, meetingNotes: [], meetingsLoaded: false, activeTab: "dashboard", expandedMeetingId: null, editingMeetingId: null, expandedNoteId: null, editingNoteId: null, logisticsLinks: {}, logisticsLoaded: false, damages: [], damagesLoaded: false, expandedDamageId: null, editingDamageId: null, damagesShowClosed: false, damagesTypeFilter: 'all' };
+  var state = { mode: "work", items: [], closedItems: [], filter: "all", whoFilter: "all", search: "", sort: "pri-desc", view: "grid", showClosed: false, editingId: null, meetingNotes: [], meetingsLoaded: false, activeTab: "dashboard", expandedMeetingId: null, editingMeetingId: null, expandedNoteId: null, logisticsLinks: {}, logisticsLoaded: false, damages: [], damagesLoaded: false, expandedDamageId: null, editingDamageId: null, damagesShowClosed: false, damagesTypeFilter: 'all' };
   var NO_MEETING_PROJECTS = ["warehouse"]; // project names (case-insensitive) that don't get Meeting Notes / Logistics / Damages
   var FILTER_DEFAULTS = { whoFilter: "all", sort: "pri-desc" };
   var POLL_MS = 45000;
@@ -547,7 +569,8 @@
     }
     if (!isPoll) setBadge('loading', 'Loading…');
     try {
-      var res = await fetch(CONFIG.API_URL + '?key=' + encodeURIComponent(CONFIG.KEY), { method: 'GET' });
+      var url = CONFIG.API_URL + '?key=' + encodeURIComponent(CONFIG.KEY) + (state.mode === 'personal' ? '&sheet=personal' : '');
+      var res = await fetch(url, { method: 'GET' });
       var data = await res.json();
       if (data.error) throw new Error(data.error);
       var all = data.items || [];
@@ -585,6 +608,7 @@
   // Meeting Notes / Logistics / Damages only make sense for an actual project chip —
   // and are held back for a few projects (e.g. Warehouse) that don't track that data.
   function perProjectTabsEligible(f) {
+    if (state.mode === 'personal') return false; // Personal mode is cards-only - no Meeting Notes/Logistics/Damages sub-tabs
     if (!isProjectFilterValue(f)) return false;
     if (NO_MEETING_PROJECTS.indexOf((f || '').trim().toLowerCase()) !== -1) return false;
     return true;
@@ -755,7 +779,8 @@
   // has no Project field. Quick-assign here files them under the right project chip. ----
   function refreshUnassignedDamagesBadge() {
     var unassigned = state.damages.filter(function (d) { return !(d.project || '').trim(); });
-    unassignedDamagesBtn.style.display = unassigned.length ? '' : 'none';
+    var show = state.mode !== 'personal' && unassigned.length > 0;
+    unassignedDamagesBtn.style.display = show ? '' : 'none';
     unassignedDamagesCount.textContent = unassigned.length ? String(unassigned.length) : '';
     if (!unassigned.length && state.activeTab === 'unassignedDamages') setActiveTab('dashboard');
   }
@@ -866,6 +891,43 @@
     return '<div class="damage-type-filter-row"><select class="filter-select damage-type-filter-select">' + optsHtml + '</select></div>';
   }
 
+  // ---- Damages status stage (per line item) - a separate track from issue type, similar in
+  // spirit to task priority: colored red at the start, green once delivered. STATUS is an
+  // OPTIONAL column on the Damages sheet tab (same forward-compatible pattern as job number
+  // below and Notes on the main tab) - reading/writing it is a no-op until Edwin adds it. ----
+  var DAMAGE_STATUS_STAGES = [
+    { code: 'reported', label: 'Site Reported' },
+    { code: 'ordered', label: 'Ordered' },
+    { code: 'production', label: 'Production' },
+    { code: 'enroute', label: 'In Route' },
+    { code: 'delivered', label: 'Delivered' }
+  ];
+
+  function damageStatusStage_(status) {
+    return DAMAGE_STATUS_STAGES.filter(function (s) { return s.label === status; })[0];
+  }
+
+  function damageStatusClass(status) {
+    var stage = damageStatusStage_(status);
+    return stage ? 'damage-status-' + stage.code : '';
+  }
+
+  function damageStatusSelectOptions(selected) {
+    var sel = selected || DAMAGE_STATUS_STAGES[0].label;
+    return DAMAGE_STATUS_STAGES.map(function (s) {
+      return '<option value="' + escapeHtml(s.label) + '"' + (sel === s.label ? ' selected' : '') + '>' + escapeHtml(s.label) + '</option>';
+    }).join('');
+  }
+
+  function damageStatusPillHtml(status) {
+    var cls = damageStatusClass(status) || 'damage-status-reported';
+    return '<span class="pill damage-status-pill ' + cls + '">' + escapeHtml(status || DAMAGE_STATUS_STAGES[0].label) + '</span>';
+  }
+
+  function damageJobNumberHtml(d) {
+    return d.jobNumber ? '<span class="mono">Job #' + escapeHtml(d.jobNumber) + '</span>' : '';
+  }
+
   function damageClosedRow(d) {
     var title = [d.unitNumber, d.itemCode].filter(Boolean).join(' · ') || '(no unit/item)';
     var typeTag = d.issueType ? '<span class="pill pill-who">' + escapeHtml(d.issueType) + '</span>' : '';
@@ -883,13 +945,14 @@
       escapeHtml(d.issueDescription || '(no issue description)') +
       (d.dateClosed ? '<br><span class="mono">Closed ' + escapeHtml(d.dateClosed) + '</span>' : '') +
       '</div>' : '';
-    return '<div class="note meeting-card damage-card' + (d.done ? ' is-done' : '') + '" data-id="' + escapeHtml(d.id) + '">' +
+    return '<div class="note meeting-card damage-card' + (d.done ? ' is-done' : '') + ' ' + damageStatusClass(d.status) + '" data-id="' + escapeHtml(d.id) + '">' +
       '<div class="note-top"><span class="note-date mono">' + escapeHtml(d.dateReported || '') + '</span>' +
       '<div class="note-actions">' +
       '<button type="button" class="note-edit-btn damage-toggle-btn" data-id="' + escapeHtml(d.id) + '" title="' + (d.done ? 'Reopen' : 'Mark closed') + '" aria-label="' + (d.done ? 'Reopen' : 'Mark closed') + '">' + (d.done ? '↺' : '✓') + '</button>' +
       '<button type="button" class="note-edit-btn damage-edit-btn" data-id="' + escapeHtml(d.id) + '" title="Edit" aria-label="Edit">✎</button>' +
       '</div></div>' +
       '<div class="note-title">' + escapeHtml(title) + (d.issueType ? ' <span class="mono">— ' + escapeHtml(d.issueType) + '</span>' : '') + '</div>' +
+      '<div class="note-tags">' + damageStatusPillHtml(d.status) + damageJobNumberHtml(d) + '</div>' +
       body +
       '</div>';
   }
@@ -905,11 +968,11 @@
       escapeHtml(d.issueDescription || '(no issue description)') +
       (d.dateClosed ? '<br><span class="mono">Closed ' + escapeHtml(d.dateClosed) + '</span>' : '') +
       '</div>' : '';
-    return '<div class="task-row damage-row' + (d.done ? ' is-done' : '') + (expanded ? ' is-note-expanded' : '') + '" data-id="' + escapeHtml(d.id) + '">' +
+    return '<div class="task-row damage-row' + (d.done ? ' is-done' : '') + (expanded ? ' is-note-expanded' : '') + ' ' + damageStatusClass(d.status) + '" data-id="' + escapeHtml(d.id) + '">' +
       '<div class="task-row-main">' +
       '<button type="button" class="note-edit-btn damage-toggle-btn" data-id="' + escapeHtml(d.id) + '" title="' + (d.done ? 'Reopen' : 'Mark closed') + '" aria-label="' + (d.done ? 'Reopen' : 'Mark closed') + '">' + (d.done ? '↺' : '✓') + '</button>' +
       '<button type="button" class="note-edit-btn damage-edit-btn" data-id="' + escapeHtml(d.id) + '" title="Edit" aria-label="Edit">✎</button>' +
-      '<span class="task-row-title">' + escapeHtml(title) + '</span>' + typeTag +
+      '<span class="task-row-title">' + escapeHtml(title) + '</span>' + typeTag + damageStatusPillHtml(d.status) +
       '<span class="task-row-date mono">' + escapeHtml(d.dateReported || '') + '</span>' +
       '</div>' + body +
       '</div>';
@@ -923,6 +986,8 @@
       '<div class="edit-field-row"><select class="edit-damage-issuetype">' + damageIssueTypeSelectOptions(d.issueType || '') + '</select></div>' +
       '<div class="edit-field-row"><textarea class="edit-damage-issuedesc" placeholder="Issue description">' + escapeHtml(d.issueDescription || '') + '</textarea></div>' +
       '<div class="edit-field-row"><input type="date" class="edit-damage-datereported" value="' + escapeHtml(d.dateReported || '') + '"></div>' +
+      '<div class="edit-field-row"><select class="edit-damage-status">' + damageStatusSelectOptions(d.status || '') + '</select></div>' +
+      '<div class="edit-field-row"><input type="text" class="edit-damage-jobnumber" placeholder="Job # (optional)" value="' + escapeHtml(d.jobNumber || '') + '"></div>' +
       '<div class="edit-actions"><button type="button" class="edit-cancel-btn damage-cancel-btn">Cancel</button><button type="button" class="edit-save-btn damage-save-btn">Save</button></div>' +
       '</div>';
   }
@@ -1026,8 +1091,10 @@
         var issueType = wrap.querySelector('.edit-damage-issuetype').value.trim();
         var issueDescription = wrap.querySelector('.edit-damage-issuedesc').value.trim();
         var dateReported = wrap.querySelector('.edit-damage-datereported').value;
+        var status = wrap.querySelector('.edit-damage-status').value;
+        var jobNumber = wrap.querySelector('.edit-damage-jobnumber').value.trim();
         btn.disabled = true;
-        postAction({ action: 'editDamage', id: id, unitNumber: unitNumber, itemCode: itemCode, itemDescription: itemDescription, issueType: issueType, issueDescription: issueDescription, dateReported: dateReported }).then(function () {
+        postAction({ action: 'editDamage', id: id, unitNumber: unitNumber, itemCode: itemCode, itemDescription: itemDescription, issueType: issueType, issueDescription: issueDescription, dateReported: dateReported, status: status, jobNumber: jobNumber }).then(function () {
           state.editingDamageId = null;
           loadDamages();
         }).catch(function () { btn.disabled = false; });
@@ -1164,6 +1231,7 @@
       return '<option value="' + p + '"' + sel + '>' + label + '</option>';
     }).join('');
     return '<div class="note is-editing" data-id="' + escapeHtml(it.id) + '">' +
+      '<div class="edit-field-row"><input type="text" class="edit-task" placeholder="Task" value="' + escapeHtml(it.task || '') + '"></div>' +
       '<div class="edit-field-row"><input type="text" class="edit-project" list="projectOptions" placeholder="Project" value="' + escapeHtml(it.project || '') + '"></div>' +
       '<div class="edit-field-row"><input type="text" class="edit-who" placeholder="Who\'s court" value="' + escapeHtml(it.who || '') + '"></div>' +
       '<div class="edit-field-row"><select class="edit-priority">' + options + '</select></div>' +
@@ -1172,20 +1240,12 @@
       '</div>';
   }
 
+  // Clicking directly on the note text itself opens the same full edit form
+  // used by the card's pencil - one edit entry point instead of two.
   function noteExpandBlock(it) {
-    var isEditingNote = String(state.editingNoteId) === String(it.id);
-    if (isEditingNote) {
-      return '<div class="note-expand" data-note-id="' + escapeHtml(it.id) + '">' +
-        '<textarea class="note-quick-edit-input" placeholder="Notes">' + escapeHtml(it.notes || '') + '</textarea>' +
-        '<div class="note-expand-actions">' +
-        '<button type="button" class="note-quick-cancel-btn" data-id="' + escapeHtml(it.id) + '" title="Cancel" aria-label="Cancel">✕</button>' +
-        '<button type="button" class="note-quick-save-btn" data-id="' + escapeHtml(it.id) + '">Save</button>' +
-        '</div></div>';
-    }
     return '<div class="note-expand" data-note-id="' + escapeHtml(it.id) + '">' +
-      '<div class="note-expand-text">' + escapeHtml(it.notes || '') + '</div>' +
+      '<div class="note-expand-text" title="Click to edit">' + escapeHtml(it.notes || '') + '</div>' +
       '<div class="note-expand-actions">' +
-      '<button type="button" class="note-quick-edit-btn" data-id="' + escapeHtml(it.id) + '" title="Edit note" aria-label="Edit note">✎</button>' +
       '<button type="button" class="note-quick-close-btn" data-id="' + escapeHtml(it.id) + '" title="Close" aria-label="Close">✕</button>' +
       '</div></div>';
   }
@@ -1271,7 +1331,7 @@
         var id = rowEl.getAttribute('data-id');
         rowEl.style.opacity = '0.4';
         rowEl.style.pointerEvents = 'none';
-        postAction({ action: 'toggleDone', id: id }).then(function () { loadItems(true); }).catch(function () { loadItems(true); });
+        postAction({ action: 'toggleDone', id: id, sheet: state.mode }).then(function () { loadItems(true); }).catch(function () { loadItems(true); });
       });
     });
   }
@@ -1388,7 +1448,7 @@
         var noteEl = box.closest('.note, .task-row');
         var id = noteEl.getAttribute('data-id');
         noteEl.classList.add('is-removing');
-        postAction({ action: 'toggleDone', id: id }).then(function () {
+        postAction({ action: 'toggleDone', id: id, sheet: state.mode }).then(function () {
           state.items = state.items.filter(function (it) { return String(it.id) !== String(id); });
           render();
         }).catch(function () { loadItems(true); });
@@ -1411,31 +1471,26 @@
       btn.addEventListener('click', function () {
         var wrap = btn.closest('.note.is-editing');
         var id = wrap.getAttribute('data-id');
+        var task = wrap.querySelector('.edit-task').value.trim();
         var project = wrap.querySelector('.edit-project').value.trim();
         var who = wrap.querySelector('.edit-who').value.trim();
         var priority = wrap.querySelector('.edit-priority').value;
         var notes = wrap.querySelector('.edit-notes').value;
-        if (!project || !who) return;
+        if (!task || !project || !who) return;
         btn.disabled = true;
-        postAction({ action: 'editTask', id: id, project: project, who: who, priority: priority, notes: notes }).then(function () {
+        postAction({ action: 'editTask', id: id, task: task, project: project, who: who, priority: priority, notes: notes, sheet: state.mode }).then(function () {
           state.editingId = null;
           loadItems(true);
         }).catch(function () { btn.disabled = false; });
       });
     });
 
-    // ---- Note icon: click to expand/collapse, with its own small pencil (edit just the note) + X (close) ----
+    // ---- Note icon: click to expand/collapse; clicking the note text itself opens the full edit form ----
     Array.prototype.forEach.call(document.querySelectorAll('.note-icon-btn'), function (btn) {
       btn.addEventListener('click', function (e) {
         e.stopPropagation();
         var id = btn.getAttribute('data-id');
-        if (String(state.expandedNoteId) === String(id)) {
-          state.expandedNoteId = null;
-          state.editingNoteId = null;
-        } else {
-          state.expandedNoteId = id;
-          state.editingNoteId = null;
-        }
+        state.expandedNoteId = String(state.expandedNoteId) === String(id) ? null : id;
         render();
       });
     });
@@ -1443,35 +1498,15 @@
       btn.addEventListener('click', function (e) {
         e.stopPropagation();
         state.expandedNoteId = null;
-        state.editingNoteId = null;
         render();
       });
     });
-    Array.prototype.forEach.call(document.querySelectorAll('.note-quick-edit-btn'), function (btn) {
-      btn.addEventListener('click', function (e) {
+    Array.prototype.forEach.call(document.querySelectorAll('.note-expand-text'), function (el) {
+      el.addEventListener('click', function (e) {
         e.stopPropagation();
-        state.editingNoteId = btn.getAttribute('data-id');
+        var wrap = el.closest('.note-expand');
+        state.editingId = wrap.getAttribute('data-note-id');
         render();
-      });
-    });
-    Array.prototype.forEach.call(document.querySelectorAll('.note-quick-cancel-btn'), function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        state.editingNoteId = null;
-        render();
-      });
-    });
-    Array.prototype.forEach.call(document.querySelectorAll('.note-quick-save-btn'), function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var id = btn.getAttribute('data-id');
-        var wrap = btn.closest('.note-expand');
-        var notes = wrap.querySelector('.note-quick-edit-input').value;
-        btn.disabled = true;
-        postAction({ action: 'editTask', id: id, notes: notes }).then(function () {
-          state.editingNoteId = null;
-          loadItems(true);
-        }).catch(function () { btn.disabled = false; });
       });
     });
 
@@ -1536,6 +1571,7 @@
   // ---- Damages: log a new open item for the current project (Sheet-backed, 4th tab) ----
   document.getElementById('damageDateInput').value = todayISO();
   document.getElementById('damageIssueTypeInput').innerHTML = damageIssueTypeSelectOptions('');
+  document.getElementById('damageStatusInput').innerHTML = damageStatusSelectOptions('');
   document.getElementById('addDamageForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var project = currentTabProject();
@@ -1546,6 +1582,8 @@
     var issueTypeInput = document.getElementById('damageIssueTypeInput');
     var issueDescInput = document.getElementById('damageIssueDescInput');
     var dateInput = document.getElementById('damageDateInput');
+    var statusInput = document.getElementById('damageStatusInput');
+    var jobNumberInput = document.getElementById('damageJobNumberInput');
     var btn = document.getElementById('addDamageBtn');
     var unitNumber = unitInput.value.trim();
     var dateReported = dateInput.value;
@@ -1559,10 +1597,13 @@
       itemDescription: itemDescInput.value.trim(),
       issueType: issueTypeInput.value.trim(),
       issueDescription: issueDescInput.value.trim(),
-      dateReported: dateReported
+      dateReported: dateReported,
+      status: statusInput.value,
+      jobNumber: jobNumberInput.value.trim()
     }).then(function () {
-      unitInput.value = ''; itemCodeInput.value = ''; itemDescInput.value = ''; issueTypeInput.value = ''; issueDescInput.value = '';
+      unitInput.value = ''; itemCodeInput.value = ''; itemDescInput.value = ''; issueTypeInput.value = ''; issueDescInput.value = ''; jobNumberInput.value = '';
       dateInput.value = todayISO();
+      statusInput.value = DAMAGE_STATUS_STAGES[0].label;
       btn.disabled = false;
       loadDamages();
     }).catch(function () { btn.disabled = false; });
@@ -1609,7 +1650,7 @@
       if (!newName || newName === project) return;
       renameBtn.disabled = true;
       renameHint.textContent = 'Renaming…';
-      postAction({ action: 'renameProject', oldName: project, newName: newName }).then(function () {
+      postAction({ action: 'renameProject', oldName: project, newName: newName, sheet: state.mode }).then(function () {
         if (projectColorOverrides[project]) {
           projectColorOverrides[newName] = projectColorOverrides[project];
           delete projectColorOverrides[project];
@@ -1646,6 +1687,38 @@
     var next = current === 'light' ? 'dark' : 'light';
     applyTheme(next);
     try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  });
+
+  // ---- Work / Personal mode toggle: a completely separate board (own Sheet tab, via the
+  // Personal toggle's own read/write) for personal projects that have nothing to do with work.
+  // Cards-only - the Meeting Notes/Logistics/Damages sub-tabs never apply in Personal mode
+  // (see perProjectTabsEligible). Remembered per-browser, same pattern as the theme toggle. ----
+  var MODE_KEY = 'mc-mode';
+  var modeToggleBtn = document.getElementById('modeToggleBtn');
+  function applyModeButton() {
+    modeToggleBtn.textContent = state.mode === 'personal' ? '🏠 Personal' : '🏢 Work';
+    modeToggleBtn.title = state.mode === 'personal' ? 'Switch to Work' : 'Switch to Personal';
+  }
+  (function initMode() {
+    var saved = null;
+    try { saved = localStorage.getItem(MODE_KEY); } catch (e) {}
+    state.mode = saved === 'personal' ? 'personal' : 'work';
+    applyModeButton();
+  })();
+  modeToggleBtn.addEventListener('click', function () {
+    state.mode = state.mode === 'personal' ? 'work' : 'personal';
+    try { localStorage.setItem(MODE_KEY, state.mode); } catch (e) {}
+    applyModeButton();
+    state.filter = 'all';
+    state.whoFilter = 'all';
+    document.getElementById('whoSelect').value = 'all';
+    state.search = '';
+    document.getElementById('searchInput').value = '';
+    state.expandedNoteId = null;
+    state.editingId = null;
+    setActiveTab('dashboard');
+    refreshUnassignedDamagesBadge();
+    loadItems(false);
   });
 
   // ---- Today's date + week-of-year badge ----
@@ -1744,7 +1817,8 @@
       project: project,
       priority: priority === 'R' ? 'R' : Number(priority),
       who: who,
-      notes: notes
+      notes: notes,
+      sheet: state.mode
     }).then(function () {
       taskInput.value = ''; projectInput.value = ''; whoInput.value = ''; priorityInput.value = ''; notesInput.value = ''; btn.disabled = false;
       loadItems(true);
@@ -1756,7 +1830,7 @@
   // Skip the background refresh while something is actively being edited — it was
   // silently rebuilding the card/list every 45s and wiping out in-progress typing.
   setInterval(function () {
-    if (state.editingId || state.editingMeetingId || state.editingNoteId) return;
+    if (state.editingId || state.editingMeetingId) return;
     loadItems(true);
   }, POLL_MS);
 })();
