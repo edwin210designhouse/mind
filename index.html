@@ -100,15 +100,6 @@
   .sync-badge.is-loading .dot { animation: pulse 1.4s ease-in-out infinite; }
   @media (prefers-reduced-motion: reduce) { .sync-badge .dot { animation: none; } }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-  .topright-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; }
-  .mode-switch { position: relative; width: 58px; height: 26px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 7px; }
-  .mode-switch-icon { font-size: 0.72rem; line-height: 1; position: relative; z-index: 1; opacity: 0.45; transition: opacity 0.18s ease; }
-  .mode-switch.is-personal .mode-switch-icon-personal,
-  .mode-switch:not(.is-personal) .mode-switch-icon-work { opacity: 1; }
-  .mode-switch-ball { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: #22c55e; box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: left 0.18s ease; }
-  .mode-switch.is-personal .mode-switch-ball { left: calc(100% - 22px); }
-  @media (prefers-reduced-motion: reduce) { .mode-switch-ball { transition: none; } }
   .date-badge { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-2); white-space: nowrap; }
   .theme-toggle-btn { padding: 6px 10px; font-size: 0.95rem; line-height: 1; }
 
@@ -305,7 +296,12 @@
 </div>
 <script>
 (function () {
-  var PIN = "44541742";
+  // The PIN itself now lives only in your Google Sheet's "Password" tab and is
+  // checked by Apps Script on Google's servers - the correct code is never sent
+  // to the browser, only a true/false answer, so it can't be found via F12 /
+  // view-source the way the old hardcoded PIN could.
+  var API_URL = "https://script.google.com/macros/s/AKfycbwytyo4N0cnH4bS6_jG4aH4rLF0xzC7ep52Li5mZ_veIGtbV_Awlzw9shlDQoFn4oKu/exec";
+  var API_KEY = "Dsv2O6mYUIU4fUDKrw7j8bNy";
   var STORAGE_KEY = "mc-unlocked";
   var htmlEl = document.documentElement;
   function unlock() {
@@ -321,18 +317,42 @@
     var form = document.getElementById('lockForm');
     var input = document.getElementById('lockPinInput');
     var errorEl = document.getElementById('lockError');
+    var btn = form ? form.querySelector('.lock-btn') : null;
     if (!form) return;
     if (!htmlEl.classList.contains('mc-unlocked')) { input.focus(); }
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.style.display = '';
+    }
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (input.value.trim() === PIN) {
-        errorEl.style.display = 'none';
-        unlock();
-      } else {
-        errorEl.style.display = '';
-        input.value = '';
-        input.focus();
-      }
+      var guess = input.value.trim();
+      if (!guess) return;
+      errorEl.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Checking…';
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'checkPin', pin: guess, key: API_KEY })
+      })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          btn.disabled = false;
+          btn.textContent = 'Unlock';
+          if (data && data.ok) {
+            unlock();
+          } else {
+            input.value = '';
+            input.focus();
+            showError('Incorrect code — try again.');
+          }
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Unlock';
+          showError("Couldn't verify right now — check your connection and try again.");
+        });
     });
   });
 })();
@@ -340,17 +360,11 @@
 <div class="wrap">
   <div class="toolbar">
     <button type="button" class="tag-chip theme-toggle-btn" id="themeToggleBtn" title="Switch light / dark">🌙</button>
+    <button type="button" class="tag-chip" id="modeToggleBtn" title="Switch to Personal">🏢 Work</button>
     <div class="brand"><span class="pin-ico">📌</span>Mind Chunk</div>
     <div class="search"><input type="text" id="searchInput" placeholder="Search open items…"></div>
     <span class="date-badge mono" id="dateBadge"></span>
-    <div class="topright-stack">
-      <div class="sync-badge is-loading" id="syncBadge"><span class="dot"></span><span id="syncText">Connecting…</span></div>
-      <div class="mode-switch" id="modeToggleBtn" role="button" tabindex="0" aria-pressed="false" title="Switch to Personal">
-        <span class="mode-switch-icon mode-switch-icon-work" aria-hidden="true">🏢</span>
-        <span class="mode-switch-icon mode-switch-icon-personal" aria-hidden="true">🏠</span>
-        <span class="mode-switch-ball"></span>
-      </div>
-    </div>
+    <div class="sync-badge is-loading" id="syncBadge"><span class="dot"></span><span id="syncText">Connecting…</span></div>
   </div>
 
   <div class="tagbar" id="tagbar"></div>
@@ -1725,8 +1739,7 @@
   var MODE_KEY = 'mc-mode';
   var modeToggleBtn = document.getElementById('modeToggleBtn');
   function applyModeButton() {
-    modeToggleBtn.classList.toggle('is-personal', state.mode === 'personal');
-    modeToggleBtn.setAttribute('aria-pressed', String(state.mode === 'personal'));
+    modeToggleBtn.textContent = state.mode === 'personal' ? '🏠 Personal' : '🏢 Work';
     modeToggleBtn.title = state.mode === 'personal' ? 'Switch to Work' : 'Switch to Personal';
   }
   (function initMode() {
@@ -1735,12 +1748,6 @@
     state.mode = saved === 'personal' ? 'personal' : 'work';
     applyModeButton();
   })();
-  modeToggleBtn.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      modeToggleBtn.click();
-    }
-  });
   modeToggleBtn.addEventListener('click', function () {
     state.mode = state.mode === 'personal' ? 'work' : 'personal';
     try { localStorage.setItem(MODE_KEY, state.mode); } catch (e) {}
