@@ -479,6 +479,10 @@
     KEY: "Dsv2O6mYUIU4fUDKrw7j8bNy"
   };
 
+  // Replaced automatically by update_mind.py right before each push -- click the sync
+  // dot up top to see when this exact copy of the site was last pushed live.
+  var BUILD_TIMESTAMP = "__BUILD_TIMESTAMP__";
+
   var state = { mode: "work", items: [], closedItems: [], filter: "all", whoFilter: "all", search: "", sort: "pri-desc", view: "grid", showClosed: false, editingId: null, meetingNotes: [], meetingsLoaded: false, activeTab: "dashboard", expandedMeetingId: null, editingMeetingId: null, expandedNoteId: null, logisticsLinks: {}, logisticsLoaded: false, damages: [], damagesLoaded: false, expandedDamageId: null, editingDamageId: null, damagesShowClosed: false, damagesTypeFilter: 'all' };
   var NO_MEETING_PROJECTS = ["warehouse"]; // project names (case-insensitive) that don't get Meeting Notes / Logistics / Damages
   var FILTER_DEFAULTS = { whoFilter: "all", sort: "pri-desc" };
@@ -524,6 +528,15 @@
     syncBadge.className = 'sync-badge' + (mode === 'error' ? ' is-error' : mode === 'loading' ? ' is-loading' : '');
     syncText.textContent = text;
   }
+
+  syncBadge.style.cursor = 'pointer';
+  syncBadge.title = 'Click to see when this site was last pushed live';
+  syncBadge.addEventListener('click', function () {
+    var msg = BUILD_TIMESTAMP.indexOf('__BUILD_TIMESTAMP__') !== -1
+      ? "This copy hasn't been pushed via update_mind.py yet, so there's no build time recorded."
+      : 'This page was last pushed live: ' + BUILD_TIMESTAMP;
+    alert(msg);
+  });
 
   // ---- Per-project tag colors: hash-assigned by default, overridable via the pencil ----
   var PROJECT_COLOR_KEY = 'mc-project-colors';
@@ -1391,6 +1404,7 @@
     var tabsEligible = perProjectTabsEligible(state.filter);
     var disabledTabTitle = !isProjectFilter ? 'Select a project to view this' : 'Not tracked for ' + state.filter;
     [tabMeetingNotes, tabLogistics, tabDamages].forEach(function (btn) {
+      btn.style.display = state.mode === 'personal' ? 'none' : '';
       btn.disabled = !tabsEligible;
       btn.title = tabsEligible ? '' : disabledTabTitle;
     });
@@ -1717,6 +1731,13 @@
     state.expandedNoteId = null;
     state.editingId = null;
     setActiveTab('dashboard');
+    [tabMeetingNotes, tabLogistics, tabDamages].forEach(function (btn) {
+      btn.style.display = state.mode === 'personal' ? 'none' : '';
+    });
+    tagbar.innerHTML = '';
+    wallSection.innerHTML = '';
+    pinnedSection.innerHTML = '';
+    closedSection.innerHTML = '';
     refreshUnassignedDamagesBadge();
     loadItems(false);
   });
